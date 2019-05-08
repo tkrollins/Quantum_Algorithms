@@ -9,7 +9,9 @@ from pyquil import Program, get_qc
 from pyquil.gates import *
 from pyquil.api import local_qvm
 
-n = 3
+n = 5
+a = 25
+b = 1
 
 qvm = get_qc('9q-square-qvm')
 
@@ -20,11 +22,10 @@ ro = p.declare('ro', 'BIT', n)
 p = initialize_experiment(p, n)
 
 # add hadamards
-p = left_hadamards(p, 3)
-# p += Program(H(0), H(1), H(2), H(3))
+p = left_hadamards(p, n)
 
 # add U_f
-p = insert_Uf(p, n, a=5, b=2)
+p = insert_Uf(p, n, a, b)
 
 # add last hadamards
 p = right_hadamards(p, n)
@@ -42,12 +43,3 @@ with local_qvm():
     print('Results:')
     print(result)
     print()
-
-# # note: can also look at mathematical expression using wavesim:
-# from pprint import pprint
-# from pyquil.api import WavefunctionSimulator
-# print('Probabilities:')
-# wf_sim = WavefunctionSimulator()
-# wavefunction = wf_sim.wavefunction(p)
-# prob_dict = wavefunction.get_outcome_probs()    # extracts the probabilities of outcomes as a dict
-# pprint(prob_dict)
