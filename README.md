@@ -1,1 +1,1 @@
-# PyQuil_hw
+# Team Penguin
