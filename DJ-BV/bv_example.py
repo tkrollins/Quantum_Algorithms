@@ -1,41 +1,24 @@
-'''
-The program performs the Bernstein-Vazirani experiment
-'''
+"""
+The main program that performs the Bernstein-Vazirani experiment
+"""
 
-from custom_gates import *
-from bernstein_vazirani import insert_Uf
-
-from pyquil import Program, get_qc
-from pyquil.gates import *
+from custom_gates import Bernstein_Vazirani
+from pyquil import get_qc
 from pyquil.api import local_qvm
 
-n = 5
-a = 25
-b = 1
+n = 5   # the number of bits in f: {0,1}^n → {0,1}
+a = 25  # the a in f(x) = a*x + b
+b = 1   # the b in f(x) = a*x + b
 
-qvm = get_qc('9q-square-qvm')
+# setup the experiment
+bv = Bernstein_Vazirani(n)
+p = bv.build_circuit(a, b)
 
-p = Program()
-ro = p.declare('ro', 'BIT', n)
-
-# initializing the bits
-p = initialize_experiment(p, n)
-
-# add hadamards
-p = left_hadamards(p, n)
-
-# add U_f
-p = insert_Uf(p, n, a, b)
-
-# add last hadamards
-p = right_hadamards(p, n)
-
-# measure
-p = measure_ro(p, n, ro)
-
-# multiple trials - check to make sure that our probabilities are 1
+# multiple trials - check to make sure that the probability for getting the given outcome is 1
 p.wrap_in_numshots_loop(5)
 
+# actually perform the measurement
+qvm = get_qc('9q-square-qvm')
 with local_qvm():
     # one way of measuring:
     executable = qvm.compile(p)
