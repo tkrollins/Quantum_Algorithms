@@ -1,34 +1,37 @@
-# py -m pip install
+'''
+The program performs the Bernstein-Vazirani experiment
+'''
 
-from pprint import pprint
+from custom_gates import *
+from bernstein_vazirani import insert_Uf
 
 from pyquil import Program, get_qc
 from pyquil.gates import *
-from pyquil.api import WavefunctionSimulator
 from pyquil.api import local_qvm
+
+n = 3
 
 qvm = get_qc('9q-square-qvm')
 
 p = Program()
-ro = p.declare('ro', 'BIT', 3)
+ro = p.declare('ro', 'BIT', n)
 
 # initializing the bits
-p += Program(I(0), I(1), I(2), X(3))
+p = initialize_experiment(p, n)
 
 # add hadamards
-p += Program(H(0), H(1), H(2), H(3))
+p = left_hadamards(p, 3)
+# p += Program(H(0), H(1), H(2), H(3))
 
 # add U_f
-p += Program(CNOT(1, 3))
+p = insert_Uf(p, n, a=5, b=2)
 
 # add last hadamards
-p += Program(H(0), H(1), H(2), I(3))
+p = right_hadamards(p, n)
 
 # measure
-p += Program(MEASURE(0, ro[0]), MEASURE(1, ro[1]), MEASURE(2, ro[2]))
+p = measure_ro(p, n, ro)
 
-print('Program:')
-print(p)
 # multiple trials - check to make sure that our probabilities are 1
 p.wrap_in_numshots_loop(5)
 
@@ -40,9 +43,11 @@ with local_qvm():
     print(result)
     print()
 
-# note: can also look at mathematical expression using wavesim:
-print('Probabilities:')
-wf_sim = WavefunctionSimulator()
-wavefunction = wf_sim.wavefunction(p)
-prob_dict = wavefunction.get_outcome_probs()    # extracts the probabilities of outcomes as a dict
-pprint(prob_dict)
+# # note: can also look at mathematical expression using wavesim:
+# from pprint import pprint
+# from pyquil.api import WavefunctionSimulator
+# print('Probabilities:')
+# wf_sim = WavefunctionSimulator()
+# wavefunction = wf_sim.wavefunction(p)
+# prob_dict = wavefunction.get_outcome_probs()    # extracts the probabilities of outcomes as a dict
+# pprint(prob_dict)
