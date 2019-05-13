@@ -1,8 +1,6 @@
 from pyquil import Program, get_qc
 from pyquil.gates import *
-from pyquil.api import local_qvm, QVMCompiler
-from time import time
-import matplotlib.pyplot as plt
+from pyquil.api import local_qvm
 
 
 class Deutsch_Jozsa():
@@ -172,9 +170,7 @@ f_bal_4 = [[0,0,0,0,1],[0,0,0,1,0],[0,0,1,0,1],[0,0,1,1,0],[0,1,0,0,1],[0,1,0,1,
            [1,0,0,0,1],[1,0,0,1,0],[1,0,1,0,1],[1,0,1,1,0],[1,1,0,0,1],[1,1,0,1,0],[1,1,1,0,1],[1,1,1,1,0]]
 
 
-
 # Constant f's, represented by truth table. First n-1 elements are the input bits, element n is the output bit
-
 # Constant f with output of 0
 f_const_1_0 = [[0,0],[1,0]]
 
