@@ -1,6 +1,8 @@
 from pyquil import Program, get_qc
 from pyquil.gates import *
-from pyquil.api import local_qvm
+from pyquil.api import local_qvm, QVMCompiler
+from time import time
+import matplotlib.pyplot as plt
 
 
 class Deutsch_Jozsa():
@@ -96,11 +98,18 @@ class Deutsch_Jozsa():
 
         # flip all helper bits to |1>
         self.uf += Program(X(h), X(h + 1), X(h + 2))
+        count = 0
 
         for bitstring in self.f:
             self.bitstring = bitstring
             # Only create gates for inputs that result in f(x) = 1
             if bitstring[-1] == 1:
+                count += 1
+                # if more than half of x lead to f(x)=1, f is constant
+                if count > (2**(self.n-1)):
+                    # U_f(b) = b XOR f(x) = NOT(b)
+                    self.p += X(b)
+                    return self.p
                 # if n == 1, then only one CCNOT gate is needed to flip b
                 if self.n == 1:
                     add_CCNOT(q, h, b)
@@ -151,15 +160,45 @@ def run_DJ(f):
         print()
 
 
-# Balanced f, represented by truth table. First n-1 elements are the input bits, element n is the output bit
-f_bal = [[0,0,0,1], [0,0,1,0], [0,1,0,0], [0,1,1,1], [1,0,0,1], [1,0,1,0], [1,1,0,0], [1,1,1,1]]
-# Constant f, represented by truth table. First n-1 elements are the input bits, element n is the output bit
-f_const = [[0,0,0,0], [0,0,1,0], [0,1,0,0], [0,1,1,0], [1,0,0,0], [1,0,1,0], [1,1,0,0], [1,1,1,0]]
+# Balanced f's, represented by truth table. First n-1 elements are the input bits, element n is the output bit
 
-print('Balanced:')
-run_DJ(f_bal)
-print('Constant:')
-run_DJ(f_const)
+f_bal_1 = [[0,0],[1,1]]
+
+f_bal_2 = [[0,0,0], [0,1,0], [1,0,1], [1,1,1]]
+
+f_bal_3 = [[0,0,0,1], [0,0,1,0], [0,1,0,0], [0,1,1,1], [1,0,0,1], [1,0,1,0], [1,1,0,0], [1,1,1,1]]
+
+f_bal_4 = [[0,0,0,0,1],[0,0,0,1,0],[0,0,1,0,1],[0,0,1,1,0],[0,1,0,0,1],[0,1,0,1,0],[0,1,1,0,1],[0,1,1,1,0],
+           [1,0,0,0,1],[1,0,0,1,0],[1,0,1,0,1],[1,0,1,1,0],[1,1,0,0,1],[1,1,0,1,0],[1,1,1,0,1],[1,1,1,1,0]]
 
 
+
+# Constant f's, represented by truth table. First n-1 elements are the input bits, element n is the output bit
+
+# Constant f with output of 0
+f_const_1_0 = [[0,0],[1,0]]
+
+f_const_2_0 = [[0,0,0], [0,1,0], [1,0,0], [1,1,0]]
+
+f_const_3_0 = [[0,0,0,0], [0,0,1,0], [0,1,0,0], [0,1,1,0], [1,0,0,0], [1,0,1,0], [1,1,0,0], [1,1,1,0]]
+
+f_const_4_0 = [[0,0,0,0,0],[0,0,0,1,0],[0,0,1,0,0],[0,0,1,1,0],[0,1,0,0,0],[0,1,0,1,0],[0,1,1,0,0],[0,1,1,1,0],
+           [1,0,0,0,0],[1,0,0,1,0],[1,0,1,0,0],[1,0,1,1,0],[1,1,0,0,0],[1,1,0,1,0],[1,1,1,0,0],[1,1,1,1,0]]
+
+# Constant f with output of 1
+f_const_1_1 = [[0,1],[1,1]]
+
+f_const_2_1 = [[0,0,1], [0,1,1], [1,0,1], [1,1,1]]
+
+f_const_3_1 = [[0,0,0,1], [0,0,1,1], [0,1,0,1], [0,1,1,1], [1,0,0,1], [1,0,1,1], [1,1,0,1], [1,1,1,1]]
+
+f_const_4_1 = [[0,0,0,0,1],[0,0,0,1,1],[0,0,1,0,1],[0,0,1,1,1],[0,1,0,0,1],[0,1,0,1,1],[0,1,1,0,1],[0,1,1,1,1],
+           [1,0,0,0,1],[1,0,0,1,1],[1,0,1,0,1],[1,0,1,1,1],[1,1,0,0,1],[1,1,0,1,1],[1,1,1,0,1],[1,1,1,1,1]]
+
+# Will return [0 0 0 1]
+run_DJ(f_bal_4)
+# Will return [0 0 0 0]
+run_DJ(f_const_4_0)
+# Will return [0 0 0 0]
+run_DJ(f_const_4_1)
 
