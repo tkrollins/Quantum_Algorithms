@@ -65,7 +65,6 @@ class Bernstein_Vazirani():
         a = self.int_to_bits(a, self.n)
         print('Expected:')
         print(a)
-        print()
 
         for i, _a in enumerate(a):
             # wherever _a is 1, we insert a CNOT into the system targeting the helper bit
@@ -107,6 +106,7 @@ class Bernstein_Vazirani():
 
 def main():
     n = 5  # the number of bits in f: {0,1}^n → {0,1}
+
     a = 25  # the a in f(x) = a*x + b
     b = 1  # the b in f(x) = a*x + b
 
@@ -115,7 +115,7 @@ def main():
     p = bv.build_circuit(a, b)
 
     # multiple trials - check to make sure that the probability for getting the given outcome is 1
-    p.wrap_in_numshots_loop(5)
+    p.wrap_in_numshots_loop(1)
 
     # actually perform the measurement
     qvm = get_qc('9q-square-qvm')
