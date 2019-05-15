@@ -106,7 +106,7 @@ class Bernstein_Vazirani():
 
 def run_BV(n, a, b):
     # setup the experiment
-    bv = Bernstein_Vazirani(n)
+    bv = Bernstein_Vazirani(n,)
     p = bv.build_circuit(a, b)
 
     # actually perform the measurement
