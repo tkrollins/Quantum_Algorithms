@@ -6,6 +6,7 @@ from pyquil import Program
 from pyquil.gates import *
 from pyquil import get_qc
 from pyquil.api import local_qvm
+import time
 
 
 class Bernstein_Vazirani():
@@ -63,8 +64,7 @@ class Bernstein_Vazirani():
 
         # first convert a into a bitstring for easy use
         a = self.int_to_bits(a, self.n)
-        print('Expected:')
-        print(a)
+        print('Expected:', a)
 
         for i, _a in enumerate(a):
             # wherever _a is 1, we insert a CNOT into the system targeting the helper bit
@@ -104,28 +104,32 @@ class Bernstein_Vazirani():
         return y
 
 
+def run_BV(n, a, b):
+    # setup the experiment
+    bv = Bernstein_Vazirani(n)
+    p = bv.build_circuit(a, b)
+
+    # actually perform the measurement
+    qvm = get_qc('9q-square-qvm')
+    with local_qvm():
+        # one way of measuring:
+        t = time.time()
+        executable = qvm.compile(p)
+        result = qvm.run(executable)
+        return_time = time.time() - t
+
+        print('Result:', result)
+        print()
+
+    return result, return_time
+
 def main():
     n = 5  # the number of bits in f: {0,1}^n → {0,1}
 
     a = 25  # the a in f(x) = a*x + b
     b = 1  # the b in f(x) = a*x + b
 
-    # setup the experiment
-    bv = Bernstein_Vazirani(n)
-    p = bv.build_circuit(a, b)
-
-    # multiple trials - check to make sure that the probability for getting the given outcome is 1
-    p.wrap_in_numshots_loop(1)
-
-    # actually perform the measurement
-    qvm = get_qc('9q-square-qvm')
-    with local_qvm():
-        # one way of measuring:
-        executable = qvm.compile(p)
-        result = qvm.run(executable)
-        print('Results:')
-        print(result)
-        print()
+    run_BV(n, a, b)
 
 
 if __name__ == '__main__':

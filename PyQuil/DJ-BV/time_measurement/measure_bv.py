@@ -23,7 +23,6 @@ def run_bv(n, a, b):
         result = qvm.run(executable)
         return_time = time.time() - t
 
-        print(result)
         print('Result:', result[0])
         print()
 
@@ -35,7 +34,7 @@ def main():
     complex_times = []
     simple_times = []
     for n in [1, 2, 3, 4, 5, 6, 7, 8]:
-        _, return_time = run_bv(n, a=(2**n)-1, b=1)
+        _, return_time = run_bv(n, a=(2**n)-1, b=0)
         complex_times.append([n, return_time])
 
         _, return_time = run_bv(n, a=0, b=1)
@@ -45,7 +44,7 @@ def main():
     simple_times = np.array(simple_times)
 
     plt.figure()
-    plt.plot(complex_times[:, 0], complex_times[:, 1], label='a != 0, b = 1')
+    plt.plot(complex_times[:, 0], complex_times[:, 1], label='a != 0, b = 0')
     plt.plot(simple_times[:, 0], simple_times[:, 1], label='a = 0, b = 1')
     plt.legend()
     plt.xlabel('Input Bits')
