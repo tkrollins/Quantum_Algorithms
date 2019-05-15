@@ -8,7 +8,7 @@ The outer list will consist of 2^n inner lists. Each inner list will be n+1 in l
 The first n elements will be the input bitstring to f, and the final element will be 
 the resulting output. 
 
-Due to the use of helper bits in this implementation, ```n ≤ 5``` for any f. 
+Due to the use of helper bits in this implementation, n ≤ 5 for any f. 
 
 Example:
 
