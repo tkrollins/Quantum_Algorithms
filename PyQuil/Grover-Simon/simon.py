@@ -8,7 +8,7 @@ class Simon():
     def __init__(self, f, qubits):
         """
         Initialize the class with a particular n, and the qubits indices
-        :param qubits: qubit indices to use in circuit
+        :param qubits: legal qubit indices from given topology
         :param f: the oracle function, represented as a truth table. First n-1 elements are the input bits,
         element n is the output bit
         """
@@ -41,8 +41,8 @@ class Simon():
 
     def build_Uf(self):
         """
-        Builds a U_f gate by chaining controlled-X gates. Idea is that any input, x,
-        that results in f(x) = 1 will flip qubit b.
+        Builds a U_f gate by chaining controlled-X gates. For any x, f(x) = b_0...b_n-1.
+        if b_i=1, it will be passed through an X-gate controlled by x.
         :return: program state after this operation
         """
 
@@ -75,7 +75,7 @@ class Simon():
             # output bits
             f_x = bitstring[self.n:]
             X_gates = NOTs(x)
-            # all 0 bits are NOT'd
+            # all 0 x bits are NOT'd
             self.uf += X_gates
             for i, b in enumerate(f_x):
                 i += self.n
@@ -104,49 +104,74 @@ class Simon():
         return self.p
 
 
-def run_Simon(f, iter):
+def run_Simon(f, iter=5):
     """
     :param iter: number of iterations run
     :param f: The oracle function with the property s encoded
     :return: The non-0^n value of s
     """
-    def solve(y_set, n):
+    def solve(y_set):
+        """
+        Naive solver for s given a set of y vectors.
+        :param y_set: y vectors returned from quantum part of algorithm.   For every y, <y, s> = 0
+        :return: A set of all valid s values in integer form. Does not include 0.
+        """
+        # number of bits in y/s
+        n = len(y_set[0])
+        # set of all currently valid s values
         s_set = set([s for s in range(1, 2 ** n)])
         for y in y_set:
             to_be_removed = set()
             for s in s_set:
                 s_bin = np.array(list(f'{s:0{n}b}')).astype(int)
+                # mod 2 dot product
                 if np.dot(y, s_bin) % 2 != 0:
+                    # s values that do not satisfy <y, s> = 0
                     to_be_removed.add(s)
             s_set = s_set.difference(to_be_removed)
         return s_set
 
+    # set topology of qvm
     qvm = get_qc('Aspen-4-6Q-A-qvm')
     qubits = qvm.qubits()
-    # qvm.compiler.client.timeout = 10  # number of seconds
 
     # setup the circuit
     simon = Simon(f, qubits)
     p = simon.build_circuit()
 
     # n-1 y's will be collected per iteration
-    p.wrap_in_numshots_loop(simon.n-1)
+    p.wrap_in_numshots_loop((simon.n-1) if simon.n > 1 else simon.n)
 
     with local_qvm():
+        # set of all currently valid s values
         s_set = set([i for i in range(1, 2 ** simon.n)])
-        # one way of measuring:
         executable = qvm.compile(p)
         for i in range(iter):
             y_set = qvm.run(executable)
-            s_set = s_set.intersection(solve(y_set, simon.n))
+            # remove invalid s values
+            s_set = s_set.intersection(solve(y_set))
+        # array of valid s values found. Does not include 0 vector
         result = [np.array(list(f'{s:0{simon.n}b}')).astype(int) for s in s_set]
         print('Results:')
         print(result)
         print()
 
+# Oracle functions.  First n/2 bits are input, second n/2 bits are output
 
-f_3 = [[0,0,0,1,0,1], [0,0,1,0,1,0], [0,1,0,0,0,0], [0,1,1,1,1,0], [1,0,0,0,0,0], [1,0,1,1,1,0], [1,1,0,1,0,1], [1,1,1,0,1,0]]
+# 1-bit function. s = [1]
+f_1 = [[0,1], [1,1]]
 
+# 2-bit function. s = [1, 1]
 f_2 = [[0,0,0,0], [0,1,1,1], [1,0,1,1], [1,1,0,0]]
 
-run_Simon(f_3, 5)
+# 3-bit function. s = [1, 1, 0]
+f_3 = [[0,0,0,1,0,1], [0,0,1,0,1,0], [0,1,0,0,0,0], [0,1,1,1,1,0], [1,0,0,0,0,0], [1,0,1,1,1,0], [1,1,0,1,0,1], [1,1,1,0,1,0]]
+
+# Will likely return [1]
+run_Simon(f_1)
+
+# # Will likely return [1,1]
+run_Simon(f_2)
+#
+# # Will likely return [1,1,0]
+run_Simon(f_3)
