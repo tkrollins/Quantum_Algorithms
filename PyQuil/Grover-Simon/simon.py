@@ -5,14 +5,15 @@ import numpy as np
 
 class Simon():
 
-    def __init__(self, f):
+    def __init__(self, f, qubits):
         """
-        Initialize the class with a particular n
+        Initialize the class with a particular n, and the qubits indices
+        :param qubits: qubit indices to use in circuit
         :param f: the oracle function, represented as a truth table. First n-1 elements are the input bits,
         element n is the output bit
         """
         self.f = f
-        self.qubit = [i for i in range(9)] # change qubit index based on QPU
+        self.qubit = qubits # change qubit index based on topology
         self.p = Program()
         self.uf = Program()
         self.n = int(len(f[0]) / 2)
@@ -20,7 +21,7 @@ class Simon():
 
     def build_circuit(self):
         """
-        Return a Program that consists of the entire Deutsch-Jozsa experiment
+        Return a Program that consists of the entire Simon experiment
         :param Uf: U_f encoded with oracle function f
         :return:
         """
@@ -32,7 +33,7 @@ class Simon():
 
     def left_hadamards(self):
         """
-        Add a Hadamard gate to every qubit (corresponds to the left-hand-side hadamards in DJ)
+        Add a Hadamard gate to every qubit (corresponds to the left-hand-side hadamards)
         :return: program state after this operation
         """
         self.p += Program([H(i) for i in range(self.n)])
@@ -40,14 +41,16 @@ class Simon():
 
     def build_Uf(self):
         """
-        Builds a U_f gate by chaining CCNOT gates. Idea is that any input, x,
+        Builds a U_f gate by chaining controlled-X gates. Idea is that any input, x,
         that results in f(x) = 1 will flip qubit b.
-        If n > 2, then helper bits are used
-        to implement the CCNOT gates correctly.
         :return: program state after this operation
         """
 
         def NOTs(x):
+            """
+            :param x: input bitstring
+            :return: A Program containing X-gates at each qubit index in which the input bit = 0
+            """
             NOTs = Program()
             for i, bit in enumerate(x):
                 if bit == 0:
@@ -55,6 +58,11 @@ class Simon():
             return NOTs
 
         def nbit_CNOT(x, b):
+            """
+            :param x: input bitstring
+            :param b: helper bit to be flipped
+            :return: X-gate on helper bit, controlled by each input bit
+            """
             nBit_CNOT = X(b)
             for i in range(len(x)):
                 nBit_CNOT = nBit_CNOT.controlled(self.qubit[i])
@@ -62,21 +70,26 @@ class Simon():
 
         for bitstring in self.f:
             bitstring = np.array(bitstring)
+            # input bits
             x = bitstring[0:self.n]
+            # output bits
             f_x = bitstring[self.n:]
             X_gates = NOTs(x)
+            # all 0 bits are NOT'd
             self.uf += X_gates
             for i, b in enumerate(f_x):
                 i += self.n
                 if b == 1:
+                    # flips b controlled on all input bits
                     self.uf += nbit_CNOT(x, self.qubit[i])
+            # undo previous NOT
             self.uf += X_gates
         self.p += self.uf
         return self.p
 
     def right_hadamards(self):
         """
-        Add a Hadamard gate to every qubit but the helper (corresponds to the right-hand-side hadamards in DJ)
+        Add a Hadamard gate to every qubit but the helper (corresponds to the right-hand-side hadamards)
         :return: program state after this operation
         """
         self.p += Program([H(i) for i in range(self.n)])
@@ -91,8 +104,12 @@ class Simon():
         return self.p
 
 
-def run_Simon(f):
-
+def run_Simon(f, iter):
+    """
+    :param iter: number of iterations run
+    :param f: The oracle function with the property s encoded
+    :return: The non-0^n value of s
+    """
     def solve(y_set, n):
         s_set = set([s for s in range(1, 2 ** n)])
         for y in y_set:
@@ -104,22 +121,22 @@ def run_Simon(f):
             s_set = s_set.difference(to_be_removed)
         return s_set
 
-    # setup the experiment
-    simon = Simon(f)
+    qvm = get_qc('Aspen-4-6Q-A-qvm')
+    qubits = qvm.qubits()
+    # qvm.compiler.client.timeout = 10  # number of seconds
+
+    # setup the circuit
+    simon = Simon(f, qubits)
     p = simon.build_circuit()
 
-    # multiple trials - check to make sure that the probability for getting the given outcome is 1
+    # n-1 y's will be collected per iteration
     p.wrap_in_numshots_loop(simon.n-1)
-
-    # actually perform the measurement
-    qvm = get_qc('9q-square-qvm')
-    qvm.compiler.client.timeout = 600  # number of seconds
 
     with local_qvm():
         s_set = set([i for i in range(1, 2 ** simon.n)])
         # one way of measuring:
         executable = qvm.compile(p)
-        for i in range(5):
+        for i in range(iter):
             y_set = qvm.run(executable)
             s_set = s_set.intersection(solve(y_set, simon.n))
         result = [np.array(list(f'{s:0{simon.n}b}')).astype(int) for s in s_set]
@@ -132,4 +149,4 @@ f_3 = [[0,0,0,1,0,1], [0,0,1,0,1,0], [0,1,0,0,0,0], [0,1,1,1,1,0], [1,0,0,0,0,0]
 
 f_2 = [[0,0,0,0], [0,1,1,1], [1,0,1,1], [1,1,0,0]]
 
-run_Simon(f_2)
+run_Simon(f_3, 5)
