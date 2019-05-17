@@ -8,6 +8,7 @@ from pyquil import get_qc
 from pyquil.api import local_qvm
 import time
 import numpy as np
+from pyquil.api import WavefunctionSimulator
 
 
 class Grover():
@@ -28,7 +29,7 @@ class Grover():
         :return:
         """
         self.initialize_experiment()
-        self.left_hadamards()
+        self.all_hadamards()
         self.insert_Gs(k)
         self.measure_ro()
         return self.p
@@ -38,10 +39,11 @@ class Grover():
         Initialize all qubits to 0
         :return: program state after this operation
         """
-        self.p += Program(RESET(i) for i in range(self.n))
+        # already reset ... just do nothing
+        # self.p += Program(RESET(i) for i in range(self.n))
         return self.p
 
-    def left_hadamards(self):
+    def all_hadamards(self):
         """
         Add a Hadamard gate to every qubit (corresponds to the left-hand-side hadamards in the circuit)
         :return: program state after this operation
@@ -56,7 +58,8 @@ class Grover():
         """
         total_gs = int(np.floor(self.num_tries(self.n)))
         for _ in range(total_gs):
-            self.p += self.G(k)
+            self.G(k)
+
         return self.p
 
     def G(self, k):
@@ -67,7 +70,19 @@ class Grover():
         """
 
         # add z_f
-        self.p += self.z_f(k)
+        self.z_f(k)
+        
+        # add more Hadamards
+        self.all_hadamards()
+        
+        # add z_f (z_f when k = 0)
+        self.z_f(0)
+
+        # add more Hadamrds
+        self.all_hadamards()
+
+        # negate everything by adding a Z to the first qubit
+        self.p += Program(Z(0))
 
         return self.p
 
@@ -89,9 +104,7 @@ class Grover():
         self.p += Program(Z_gate)
 
         # add a X for every bit in k that is 0 (again)
-
-        print(self.p)
-        exit(0)
+        self.p += Program([X(k_b) for k_b in range(len(k_bits)) if k_bits[k_b] == 0])
 
         return self.p
 
@@ -121,31 +134,43 @@ class Grover():
         return y
 
 
-def run_grover(n, k):
+def run_grover(n, k, numshots=5, sim_wave=False):
     # setup the experiment
     gr = Grover(n)
     p = gr.build_circuit(k)
 
-    # actually perform the measurement
-    qvm = get_qc('9q-square-qvm')
+    qvm = get_qc('Aspen-4-6Q-A-qvm')
     with local_qvm():
-        # one way of measuring:
-        t = time.time()
-        executable = qvm.compile(p)
-        result = qvm.run(executable)
-        return_time = time.time() - t
+        if sim_wave:
+            # debug waveform
+            wf_sim = WavefunctionSimulator()
+            wavefunction = wf_sim.wavefunction(p)
 
-        print('Result:', result)
-        print()
+            # The amplitudes are stored as a numpy array on the Wavefunction object
+            print(wavefunction.amplitudes)
+            prob_dict = wavefunction.get_outcome_probs()  # extracts the probabilities of outcomes as a dict
+            print(prob_dict)
+        else:
+            # multiple trials - check to make sure that the probability for getting the given outcome is 1
+            p.wrap_in_numshots_loop(numshots)
 
-    return result, return_time
+            # actually perform the measurement
+            t = time.time()
+            executable = qvm.compile(p)
+            result = qvm.run(executable)
+            return_time = time.time() - t
+
+            print('Result:', result)
+            print()
+
+            return result, return_time
 
 def main():
-    n = 5   # the number of bits in f: {0,1}^n → {0,1}
-    k = 5   # f(k) = 1, f(!k) = 0
+    n = 2   # the number of bits in f: {0,1}^n → {0,1}
+    k = 0   # f(k) = 1, f(!k) = 0
 
     # run the experiment with specific n and k
-    run_grover(n, k)
+    run_grover(n, k, numshots=10, sim_wave=True)
 
 
 if __name__ == '__main__':
