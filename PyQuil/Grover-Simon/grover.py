@@ -21,6 +21,8 @@ class Grover():
         self.p = Program()
         self.ro = self.p.declare('ro', 'BIT', n)
         self.n = n
+        # build a map of the aspen bits:
+        self.map = self.aspen_map(n)
 
     def build_circuit(self, k):
         """
@@ -34,13 +36,19 @@ class Grover():
         self.measure_ro()
         return self.p
 
+    def from_map(self, i):
+        if self.map is None:
+            return i
+        else:
+            return self.map[i]
+
     def initialize_experiment(self):
         """
         Initialize all qubits to 0
         :return: program state after this operation
         """
         # already reset ... just do nothing
-        # self.p += Program(RESET(i) for i in range(self.n))
+        # self.p += Program(RESET(self.from_map(i)) for i in range(self.n))
         return self.p
 
     def all_hadamards(self):
@@ -48,7 +56,7 @@ class Grover():
         Add a Hadamard gate to every qubit (corresponds to the left-hand-side hadamards in the circuit)
         :return: program state after this operation
         """
-        self.p += Program([H(i) for i in range(self.n)])
+        self.p += Program([H(self.from_map(i)) for i in range(self.n)])
         return self.p
 
     def insert_Gs(self, k):
@@ -56,7 +64,8 @@ class Grover():
         Add the required number of G chunks that are required by the system
         :return: program state after this operation
         """
-        total_gs = int(np.floor(self.num_tries(self.n)))
+        total_gs = int(np.round(self.num_tries(self.n)))
+        assert total_gs > 0
         for _ in range(total_gs):
             self.G(k)
 
@@ -82,7 +91,7 @@ class Grover():
         self.all_hadamards()
 
         # negate everything by adding a Z to the first qubit
-        self.p += Program(Z(0))
+        self.p += Program(Z(self.from_map(0)))
 
         return self.p
 
@@ -95,16 +104,16 @@ class Grover():
 
         # add a X for every bit in k that is 0
         k_bits = self.int_to_bits(k, self.n)
-        self.p += Program([X(k_b) for k_b in range(len(k_bits)) if k_bits[k_b] == 0])
+        self.p += Program([X(self.from_map(k_b)) for k_b in range(len(k_bits)) if k_bits[k_b] == 0])
 
         # add a controlled Z to the first (arbitrary) qubit. All other qubits will be controls
-        Z_gate = Z(0)
+        Z_gate = Z(self.from_map(0))
         for i in range(self.n-1):
-            Z_gate.controlled(i+1)
+            Z_gate.controlled(self.from_map(i+1))
         self.p += Program(Z_gate)
 
         # add a X for every bit in k that is 0 (again)
-        self.p += Program([X(k_b) for k_b in range(len(k_bits)) if k_bits[k_b] == 0])
+        self.p += Program([X(self.from_map(k_b)) for k_b in range(len(k_bits)) if k_bits[k_b] == 0])
 
         return self.p
 
@@ -113,7 +122,7 @@ class Grover():
         Measure every qubit but the last one
         :return: program state after this operation
         """
-        self.p += Program([MEASURE(i, self.ro[i]) for i in range(self.n)])
+        self.p += Program([MEASURE(self.from_map(i), self.ro[i]) for i in range(self.n)])
         return self.p
 
     @staticmethod
@@ -133,13 +142,27 @@ class Grover():
             y = [0] + y
         return y
 
+    @staticmethod
+    def aspen_map(n):
+        map = None
+        if 3 <= n <= 5:
+            if n == 3:
+                # map = [10, 11, 17]  # TODO: are these wrong?
+                map = [0, 1, 2]  # TODO: are these wrong?
+            if n == 4:
+                map = [0, 1, 2, 7]
+            if n == 5:
+                map = [0, 1, 2, 7, 15]
+        return map
 
-def run_grover(n, k, numshots=5, sim_wave=False):
+
+def run_grover(n, k, numshots=5, sim_wave=False, print_p=False):
     # setup the experiment
     gr = Grover(n)
     p = gr.build_circuit(k)
+    if print_p: print(p)
 
-    qvm = get_qc('Aspen-4-6Q-A-qvm')
+    qvm = get_qc('Aspen-4-6Q-A-qvm' if 3 <= n <= 5 else '9q-square-qvm')
     with local_qvm():
         if sim_wave:
             # debug waveform
@@ -160,17 +183,37 @@ def run_grover(n, k, numshots=5, sim_wave=False):
             result = qvm.run(executable)
             return_time = time.time() - t
 
-            print('Result:', result)
+            # count the different occurences and pick the largest one
+            counts = {}
+            for i in (result):
+                found = False
+                for key in counts.keys():
+                    if str(i) == key:
+                        found = True
+                        break
+                if not found:
+                    counts[str(i)] = 1
+                else:
+                    counts[str(i)] += 1
+            print(counts)
+
+            most_probable = None
+            for key in counts.keys():
+                if most_probable is None or counts[key] > counts[most_probable]:
+                    most_probable = key
+
+            print('Most probable result: k={}'.format(most_probable))
             print()
 
             return result, return_time
 
+
 def main():
-    n = 2   # the number of bits in f: {0,1}^n → {0,1}
-    k = 0   # f(k) = 1, f(!k) = 0
+    n = 5   # the number of bits in f: {0,1}^n → {0,1}
+    k = 2   # f(k) = 1, f(!k) = 0
 
     # run the experiment with specific n and k
-    run_grover(n, k, numshots=10, sim_wave=True)
+    run_grover(n, k, numshots=25, sim_wave=False)
 
 
 if __name__ == '__main__':
