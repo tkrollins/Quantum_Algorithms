@@ -36,7 +36,7 @@ class Simon():
         Add a Hadamard gate to every qubit (corresponds to the left-hand-side hadamards)
         :return: program state after this operation
         """
-        self.p += Program([H(i) for i in range(self.n)])
+        self.p += Program([H(i) for i in self.qubit[:self.n]])
         return self.p
 
     def build_Uf(self):
@@ -92,7 +92,7 @@ class Simon():
         Add a Hadamard gate to every qubit but the helper (corresponds to the right-hand-side hadamards)
         :return: program state after this operation
         """
-        self.p += Program([H(i) for i in range(self.n)])
+        self.p += Program([H(i) for i in self.qubit[:self.n]])
         return self.p
 
     def measure_ro(self):
@@ -100,7 +100,7 @@ class Simon():
         Measure every qubit but the last one
         :return: program state after this operation
         """
-        self.p += Program([MEASURE(i, self.ro[i]) for i in range(self.n)])
+        self.p += Program([MEASURE(j, self.ro[i]) for i, j in enumerate(self.qubit[:self.n])])
         return self.p
 
 
@@ -170,8 +170,8 @@ f_3 = [[0,0,0,1,0,1], [0,0,1,0,1,0], [0,1,0,0,0,0], [0,1,1,1,1,0], [1,0,0,0,0,0]
 # Will likely return [1]
 run_Simon(f_1)
 
-# # Will likely return [1,1]
+# Will likely return [1,1]
 run_Simon(f_2)
-#
-# # Will likely return [1,1,0]
+
+# Will likely return [1,1,0]
 run_Simon(f_3)
