@@ -1,5 +1,5 @@
 """
-The main program that performs the Bernstein-Vazirani experiment
+The main program that performs the Grover experiment
 """
 
 from pyquil import Program
@@ -151,7 +151,7 @@ class Grover:
 
 def run_grover(n, k, numshots=5, sim_wave=False, print_p=False, use_aspen=True):
     """
-
+    Run a single experiment of Grover
     :param n: the number of bits to use in the circuit
     :param k: the specific value for which f(x) returns 1
     :param numshots: number of times to run simulation (if enabled)
@@ -160,8 +160,8 @@ def run_grover(n, k, numshots=5, sim_wave=False, print_p=False, use_aspen=True):
     :param use_aspen: whether to compile using the Aspen QPC when available (3 <= n <= 5)
     :return:
     """
-    # setup the experiment
 
+    # setup the experiment
     qvm = get_qc('Aspen-4-{}Q-A-qvm'.format(n) if use_aspen else '9q-square-qvm')
     gr = Grover(n, qubits=(qvm.qubits() if use_aspen else None))
     p = gr.build_circuit(k)
