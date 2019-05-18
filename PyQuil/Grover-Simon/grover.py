@@ -11,18 +11,19 @@ import numpy as np
 from pyquil.api import WavefunctionSimulator
 
 
-class Grover():
+class Grover:
 
-    def __init__(self, n):
+    def __init__(self, n, qubits=None):
         """
         Initialize the class with a particular n
         :param n: the number of bits to use in the circuit
+        :param map: map of qubits for the QPC
         """
         self.p = Program()
         self.ro = self.p.declare('ro', 'BIT', n)
         self.n = n
         # build a map of the aspen bits:
-        self.map = self.aspen_map(n)
+        self.map = qubits
 
     def build_circuit(self, k):
         """
@@ -37,6 +38,11 @@ class Grover():
         return self.p
 
     def from_map(self, i):
+        """
+        Returns a mapping to the qubits if one exists - otherwise just return identity
+        :param i: the qubit index of the map you want to map to
+        :return: the new qubit
+        """
         if self.map is None:
             return i
         else:
@@ -142,27 +148,26 @@ class Grover():
             y = [0] + y
         return y
 
-    @staticmethod
-    def aspen_map(n):
-        map = None
-        if 3 <= n <= 5:
-            if n == 3:
-                # map = [10, 11, 17]  # TODO: are these wrong?
-                map = [0, 1, 2]  # TODO: are these wrong?
-            if n == 4:
-                map = [0, 1, 2, 7]
-            if n == 5:
-                map = [0, 1, 2, 7, 15]
-        return map
 
+def run_grover(n, k, numshots=5, sim_wave=False, print_p=False, use_aspen=True):
+    """
 
-def run_grover(n, k, numshots=5, sim_wave=False, print_p=False):
+    :param n: the number of bits to use in the circuit
+    :param k: the specific value for which f(x) returns 1
+    :param numshots: number of times to run simulation (if enabled)
+    :param sim_wave: generate waveform (if True) or run simulation (if False)
+    :param print_p: print the circuit prior to running
+    :param use_aspen: whether to compile using the Aspen QPC when available (3 <= n <= 5)
+    :return:
+    """
     # setup the experiment
-    gr = Grover(n)
-    p = gr.build_circuit(k)
-    if print_p: print(p)
 
-    qvm = get_qc('Aspen-4-6Q-A-qvm' if 3 <= n <= 5 else '9q-square-qvm')
+    qvm = get_qc('Aspen-4-{}Q-A-qvm'.format(n) if use_aspen else '9q-square-qvm')
+    gr = Grover(n, qubits=(qvm.qubits() if use_aspen else None))
+    p = gr.build_circuit(k)
+    if print_p:
+        print(p)
+
     with local_qvm():
         if sim_wave:
             # debug waveform
@@ -209,11 +214,11 @@ def run_grover(n, k, numshots=5, sim_wave=False, print_p=False):
 
 
 def main():
-    n = 5   # the number of bits in f: {0,1}^n → {0,1}
-    k = 2   # f(k) = 1, f(!k) = 0
+    n = 4   # the number of bits in f: {0,1}^n → {0,1}
+    k = 2   # f(x = k) = 1, f(x != k) = 0
 
     # run the experiment with specific n and k
-    run_grover(n, k, numshots=25, sim_wave=False)
+    run_grover(n, k, numshots=5*n, sim_wave=False, use_aspen=True)
 
 
 if __name__ == '__main__':
