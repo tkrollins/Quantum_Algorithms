@@ -188,7 +188,7 @@ def run_grover(n, k, numshots=5, sim_wave=False, print_p=False, use_aspen=True):
             result = qvm.run(executable)
             return_time = time.time() - t
 
-            # count the different occurences and pick the largest one
+            # count the different occurrences and pick the largest one
             counts = {}
             for i in (result):
                 found = False
