@@ -71,6 +71,7 @@ class Grover:
         :return: program state after this operation
         """
         total_gs = int(np.round(self.num_tries(self.n)))
+        print('adding {} G blocks...'.format(total_gs))
         assert total_gs > 0
         for _ in range(total_gs):
             self.G(k)
@@ -90,7 +91,7 @@ class Grover:
         # add more Hadamards
         self.all_hadamards()
         
-        # add z_f (z_f when k = 0)
+        # add z_f (can be thought of as z_f when k = 0)
         self.z_f(0)
 
         # add more Hadamrds
@@ -190,7 +191,7 @@ def run_grover(n, k, numshots=5, sim_wave=False, print_p=False, use_aspen=True):
 
             # count the different occurrences and pick the largest one
             counts = {}
-            for i in (result):
+            for i in result:
                 found = False
                 for key in counts.keys():
                     if str(i) == key:
@@ -214,11 +215,30 @@ def run_grover(n, k, numshots=5, sim_wave=False, print_p=False, use_aspen=True):
 
 
 def main():
+    n = 2   # the number of bits in f: {0,1}^n → {0,1}
+    k = 2   # f(x = k) = 1, f(x != k) = 0
+    # run the experiment with specific n and k
+    run_grover(n, k, numshots=2**n, sim_wave=False, use_aspen=True)
+
+    n = 3   # the number of bits in f: {0,1}^n → {0,1}
+    k = 2   # f(x = k) = 1, f(x != k) = 0
+    # run the experiment with specific n and k
+    run_grover(n, k, numshots=2**n, sim_wave=False, use_aspen=True)
+
     n = 4   # the number of bits in f: {0,1}^n → {0,1}
     k = 2   # f(x = k) = 1, f(x != k) = 0
-
     # run the experiment with specific n and k
-    run_grover(n, k, numshots=5*n, sim_wave=False, use_aspen=True)
+    run_grover(n, k, numshots=2**n, sim_wave=False, use_aspen=True)
+
+    n = 5   # the number of bits in f: {0,1}^n → {0,1}
+    k = 2   # f(x = k) = 1, f(x != k) = 0
+    # run the experiment with specific n and k
+    run_grover(n, k, numshots=2**n, sim_wave=False, use_aspen=True)
+
+    n = 6   # the number of bits in f: {0,1}^n → {0,1}
+    k = 2   # f(x = k) = 1, f(x != k) = 0
+    # run the experiment with specific n and k
+    run_grover(n, k, numshots=2**n, sim_wave=False, use_aspen=True)
 
 
 if __name__ == '__main__':
