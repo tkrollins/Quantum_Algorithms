@@ -118,7 +118,7 @@ class Deutsch_Jozsa():
 def run_DJ(f):
     # set topology of qvm
     qvm = get_qc('Aspen-4-6Q-A-qvm')
-    qvm.compiler.client.timeout = 30  # number of seconds
+    # qvm.compiler.client.timeout = 30  # number of seconds
     qubits = qvm.qubits()
 
     # setup the experiment
@@ -181,7 +181,7 @@ f_const_4_1 = [[0,0,0,0,1],[0,0,0,1,1],[0,0,1,0,1],[0,0,1,1,1],[0,1,0,0,1],[0,1,
            [1,0,0,0,1],[1,0,0,1,1],[1,0,1,0,1],[1,0,1,1,1],[1,1,0,0,1],[1,1,0,1,1],[1,1,1,0,1],[1,1,1,1,1]]
 
 # Will return [0 0 0 1]
-run_DJ(f_bal_4)
+run_DJ(f_bal_3)
 # Will return [0 0 0 0]
 run_DJ(f_const_4_0)
 # Will return [0 0 0 0]

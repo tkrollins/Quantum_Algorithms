@@ -2,6 +2,9 @@ from pyquil import Program, get_qc
 from pyquil.gates import *
 from pyquil.api import local_qvm
 import numpy as np
+from scipy.linalg import null_space
+import time
+import matplotlib.pyplot as plt
 
 class Simon():
 
@@ -9,8 +12,8 @@ class Simon():
         """
         Initialize the class with a particular n, and the qubits indices
         :param qubits: legal qubit indices from given topology
-        :param f: the oracle function, represented as a truth table. First n-1 elements are the input bits,
-        element n is the output bit
+        :param f: the oracle function, represented as a truth table. First n/2 elements are the input bits,
+        second n/2 bits are output
         """
         self.f = f
         self.qubit = qubits # change qubit index based on topology
@@ -71,7 +74,7 @@ class Simon():
         for bitstring in self.f:
             bitstring = np.array(bitstring)
             # input bits
-            x = bitstring[0:self.n]
+            x = bitstring[:self.n]
             # output bits
             f_x = bitstring[self.n:]
             X_gates = NOTs(x)
@@ -104,13 +107,13 @@ class Simon():
         return self.p
 
 
-def run_Simon(f, iter=5):
+def run_Simon(f, naive=False):
     """
-    :param iter: number of iterations run
+    :param naive: True will run the naive solver to find s
     :param f: The oracle function with the property s encoded
-    :return: The non-0^n value of s
+    :return: Prints the non-0^n value of s
     """
-    def solve(y_set):
+    def naive_solve(y_set):
         """
         Naive solver for s given a set of y vectors.
         :param y_set: y vectors returned from quantum part of algorithm.   For every y, <y, s> = 0
@@ -133,25 +136,44 @@ def run_Simon(f, iter=5):
 
     # set topology of qvm
     qvm = get_qc('Aspen-4-6Q-A-qvm')
+    # qvm.compiler.client.timeout = 300  # number of seconds
     qubits = qvm.qubits()
 
     # setup the circuit
     simon = Simon(f, qubits)
     p = simon.build_circuit()
 
-    # n-1 y's will be collected per iteration
-    p.wrap_in_numshots_loop((simon.n-1) if simon.n > 1 else simon.n)
+    shots = simon.n*2
+    # 2n y's will be collected per iteration
+    p.wrap_in_numshots_loop(shots)
 
     with local_qvm():
-        # set of all currently valid s values
-        s_set = set([i for i in range(1, 2 ** simon.n)])
-        executable = qvm.compile(p)
-        for i in range(iter):
-            y_set = qvm.run(executable)
+
+        while True:
+            executable = qvm.compile(p)
+            # collcet y's and remove duplicates
+            y_set = np.unique(qvm.run(executable), axis=0)
+            if simon.n > 1:
+                # removes 0 vector
+                y_set = np.delete(y_set, np.where(~y_set.any(axis=1))[0], axis=0)
+            if len(y_set) > simon.n-1 and simon.n != 1:
+                # remove one y so n-1 left
+                y_set = y_set[:-1]
+            if len(y_set) == (simon.n-1) or (simon.n == 1 and len(y_set) == 1):
+                break
+
+        if naive:
+            # set of all currently valid s values
+            s_set = set([i for i in range(1, 2 ** simon.n)])
             # remove invalid s values
-            s_set = s_set.intersection(solve(y_set))
-        # array of valid s values found. Does not include 0 vector
-        result = [np.array(list(f'{s:0{simon.n}b}')).astype(int) for s in s_set]
+            s_set = s_set.intersection(naive_solve(y_set))
+            # array of valid s values found. Does not include 0 vector
+            result = [np.array(list(f'{s:0{simon.n}b}')).astype(int) for s in s_set]
+        else:
+            # Solve by finding null space of n-1 y matrix
+            ns = null_space(y_set)
+            result = np.ceil(ns*ns).transpose()
+
         print('Results:')
         print(result)
         print()
@@ -167,11 +189,20 @@ f_2 = [[0,0,0,0], [0,1,1,1], [1,0,1,1], [1,1,0,0]]
 # 3-bit function. s = [1, 1, 0]
 f_3 = [[0,0,0,1,0,1], [0,0,1,0,1,0], [0,1,0,0,0,0], [0,1,1,1,1,0], [1,0,0,0,0,0], [1,0,1,1,1,0], [1,1,0,1,0,1], [1,1,1,0,1,0]]
 
-# Will likely return [1]
+# 4-bit function. s = [1, 1, 1, 1]
+f_4 = [[0,0,0,0, 1,1,1,1], [0,0,0,1, 1,1,1,0], [0,0,1,0, 1,1,0,1], [0,0,1,1, 1,1,0,0], [0,1,0,0, 1,0,1,1], [0,1,0,1, 1,0,1,0],
+       [0,1,1,0, 1,0,0,1], [0,1,1,1, 1,0,0,0], [1,0,0,0, 1,0,0,0], [1,0,0,1, 1,0,0,1], [1,0,1,0, 1,0,1,0], [1,0,1,1, 1,0,1,1],
+       [1,1,0,0, 1,1,0,0], [1,1,0,1, 1,1,0,1], [1,1,1,0, 1,1,1,0], [1,1,1,1, 1,1,1,1]]
+
+
+# Will return [1]
 run_Simon(f_1)
 
-# Will likely return [1,1]
+# Will return [1,1]
 run_Simon(f_2)
 
-# Will likely return [1,1,0]
+# Will return [1,1,0]
 run_Simon(f_3)
+
+
+

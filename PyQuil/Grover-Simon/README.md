@@ -1,7 +1,28 @@
-## Instructions for running the Deutsch-Jozsa and Bernstein-Vazirani algorithms
+## Instructions for running Simon's and Grover's algorithms
 
 ### Simon
+```simon.py``` is the script used run Simon's algorithm on a given 
+oracle function (f).  To use this script, you need to type out f as a list of lists. 
 
+The outer list will consist of 2^n inner lists, where n is then number of input bits. 
+Each inner list will be 2n in length. 
+The first n elements will be the input bitstring to f, and the final element will be 
+the resulting output. 
+
+Example:
+
+    f = [[0,0, 0,0], [0,1, 1,1], [1,0, 1,1], [1,1, 0,0]]
+    
+    Here n = 2 and and s = [1,1].
+    f must have a valid s value, or the algorithm will fail.
+
+Once you have your f ready, all that is necessary is to call ```run_Simon(f, naive=False)```.
+This function will run Simon's on f, naive=True will use an naive solver to find s.  False will 
+use matrix null_space method; naive defaults to False.  This function will print out the non-0 
+value for s.
+
+Currently there are 3 calls to run_Simon() present at the end of the script. 
+You can add your call after these or simply delete them.
 
 ### Grover
 
