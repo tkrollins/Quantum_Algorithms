@@ -172,7 +172,8 @@ def run_Simon(f, naive=False):
         else:
             # Solve by finding null space of n-1 y matrix
             ns = null_space(y_set)
-            result = np.ceil(ns*ns).transpose()
+            # make all elements positive, norm to 0/1
+            result = np.sign(ns*ns).transpose()
 
         print('Results:')
         print(result)
