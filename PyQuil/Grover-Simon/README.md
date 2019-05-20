@@ -1,7 +1,7 @@
 ## Instructions for running Simon's and Grover's algorithms
 
 ### Simon
-```simon.py``` is the script used run Simon's algorithm on a given 
+```simon.py``` is the script used to run Simon's algorithm on a given 
 oracle function (f).  To use this script, you need to type out f as a list of lists. 
 
 The outer list will consist of 2^n inner lists, where n is then number of input bits. 
@@ -17,7 +17,7 @@ Example:
     f must have a valid s value, or the algorithm will fail.
 
 Once you have your f ready, all that is necessary is to call ```run_Simon(f, naive=False)```.
-This function will run Simon's on f, naive=True will use an naive solver to find s.  False will 
+This function will run Simon's algorithm on f, naive=True will use an naive solver to find s.  False will 
 use matrix null_space method; naive defaults to False.  This function will print out the non-0 
 value for s.
 
