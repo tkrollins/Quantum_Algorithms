@@ -105,29 +105,22 @@ class Bernstein_Vazirani():
 def run_BV(n, a, b):
     # setup the experiment
     bv = Bernstein_Vazirani(n)
-    c = bv.build_circuit(a, b)
-    print(c)
-    exit(0)
+    circuit = bv.build_circuit(a, b)
 
-    # actually perform the measurement
-    qvm = get_qc('9q-square-qvm')
-    with local_qvm():
-        # one way of measuring:
-        t = time.time()
-        executable = qvm.compile(p)
-        result = qvm.run(executable)
-        return_time = time.time() - t
-
-        print('Result:', result)
-        print()
+    # start simulator
+    simulator = cirq.Simulator()
+    t = time.time()
+    result = simulator.run(circuit, repetitions=50)
+    return_time = time.time() - t
+    print(result)
 
     return result, return_time
 
 def main():
-    n = 5  # the number of bits in f: {0,1}^n → {0,1}
+    n = 5   # the number of bits in f: {0,1}^n → {0,1}
 
     a = 25  # the a in f(x) = a*x + b
-    b = 1  # the b in f(x) = a*x + b
+    b = 1   # the b in f(x) = a*x + b
 
     run_BV(n, a, b)
 
