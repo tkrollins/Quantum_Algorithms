@@ -16,7 +16,6 @@ class Bernstein_Vazirani():
         self.n = n
         self.qubits = cirq.LineQubit.range(n + 1)
         self.circuit = cirq.Circuit()
-        self.insert_strategy = cirq.InsertStrategy.NEW
 
     def build_circuit(self, a, b):
         """
@@ -37,7 +36,7 @@ class Bernstein_Vazirani():
         Initialize the first qubits to 0 and the last (helper) qubit to 1
         :return p: circuit state after this operation
         """
-        self.circuit.append([cirq.X(self.qubits[self.n])], strategy=self.insert_strategy)
+        self.circuit.append([cirq.X(self.qubits[self.n])], strategy=cirq.InsertStrategy.NEW)
         return self.circuit
 
     def left_hadamards(self):
@@ -58,7 +57,7 @@ class Bernstein_Vazirani():
 
         # if b is not even, then we need to flip the helper qubit (the last one)
         if b % 2 != 0:
-            self.circuit.append([cirq.X(self.qubits[self.n])], strategy=self.insert_strategy)
+            self.circuit.append([cirq.X(self.qubits[self.n])], strategy=cirq.InsertStrategy.NEW)
 
         # first convert a into a bitstring for easy use
         a = self.int_to_bits(a, self.n)
@@ -67,7 +66,7 @@ class Bernstein_Vazirani():
         for i, _a in enumerate(a):
             # wherever _a is 1, we insert a CNOT into the system targeting the helper bit
             if _a == 1:
-                self.circuit.append([cirq.CNOT(self.qubits[i], self.qubits[self.n])], strategy=self.insert_strategy)
+                self.circuit.append([cirq.CNOT(self.qubits[i], self.qubits[self.n])], strategy=cirq.InsertStrategy.NEW)
 
         # return the program, which now has U_f inserted
         return self.circuit
