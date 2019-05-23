@@ -91,7 +91,7 @@ class Grover:
         # add more Hadamards
         self.all_hadamards()
         
-        # add z_f (can be thought of as z_f when k = 0)
+        # add z_0 (can be thought of as z_f when k = 0)
         self.z_f(0)
 
         # add more Hadamrds

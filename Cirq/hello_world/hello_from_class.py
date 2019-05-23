@@ -25,8 +25,21 @@ print(repr(circuit))
 print()
 
 # this can be used to simulate a line of named qubits (like in PyQuil)
-line = cirq.LineQubit.range(5)
+# line = cirq.LineQubit.range(5)
 
 # yield: is a lazy list comprehension... it won't generate all the values right away, like in list comprehension
+def xor_swap(a, b):
+    yield cirq.CNOT(a, b)
+    yield cirq.CNOT(b, a)
+    yield cirq.CNOT(a, b)
 
+
+def left_rotate(qubits):
+    for i in range(len(qubits) - 1):
+        a, b = qubits[i:i + 2]
+        yield xor_swap(a, b)
+
+
+line = cirq.LineQubit.range(5)
+print(cirq.Circuit.from_ops(left_rotate(line)))
 
