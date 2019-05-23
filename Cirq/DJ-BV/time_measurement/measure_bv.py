@@ -11,12 +11,13 @@ import matplotlib.pyplot as plt
 def run_bv(n, a, b):
     # setup the experiment
     bv = Bernstein_Vazirani(n)
-    circuit = bv.build_circuit(a, b)
 
     # start simulator
     simulator = cirq.Simulator()
+
     t = time.time()
-    result = simulator.run(circuit, repetitions=50)
+    circuit = bv.build_circuit(a, b)
+    result = simulator.run(circuit, repetitions=1)
     return_time = time.time() - t
     print(result)
 
