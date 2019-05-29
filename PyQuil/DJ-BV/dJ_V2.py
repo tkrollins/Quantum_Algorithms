@@ -8,7 +8,7 @@ class Deutsch_Jozsa():
 
     def __init__(self, f, qubits):
         """
-        Initialize the class with a particular n
+        Initialize the class with a particular f
         :param f: the oracle function, represented as a truth table. First n-1 elements are the input bits,
         element n is the output bit
         """
