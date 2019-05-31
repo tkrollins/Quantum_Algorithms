@@ -2,28 +2,29 @@
 The main program that performs the Grover experiment
 """
 
-from pyquil import Program
-from pyquil.gates import *
-from pyquil import get_qc
-from pyquil.api import local_qvm
+# from pyquil import Program
+# from pyquil.gates import *
+# from pyquil import get_qc
+# from pyquil.api import local_qvm
+# import time
+# import numpy as np
+# from pyquil.api import WavefunctionSimulator
+
+import cirq
 import time
 import numpy as np
-from pyquil.api import WavefunctionSimulator
 
 
 class Grover:
 
-    def __init__(self, n, qubits=None):
+    def __init__(self, n):
         """
         Initialize the class with a particular n
         :param n: the number of bits to use in the circuit
-        :param map: map of qubits for the QPC
         """
-        self.p = Program()
-        self.ro = self.p.declare('ro', 'BIT', n)
         self.n = n
-        # build a map of the aspen bits:
-        self.map = qubits
+        self.qubits = cirq.LineQubit.range(n)
+        self.circuit = cirq.Circuit()
 
     def build_circuit(self, k):
         """
@@ -35,18 +36,7 @@ class Grover:
         self.all_hadamards()
         self.insert_Gs(k)
         self.measure_ro()
-        return self.p
-
-    def from_map(self, i):
-        """
-        Returns a mapping to the qubits if one exists - otherwise just return identity
-        :param i: the qubit index of the map you want to map to
-        :return: the new qubit
-        """
-        if self.map is None:
-            return i
-        else:
-            return self.map[i]
+        return self.circuit
 
     def initialize_experiment(self):
         """
@@ -55,15 +45,16 @@ class Grover:
         """
         # already reset ... just do nothing
         # self.p += Program(RESET(self.from_map(i)) for i in range(self.n))
-        return self.p
+        return self.circuit
 
     def all_hadamards(self):
         """
         Add a Hadamard gate to every qubit (corresponds to the left-hand-side hadamards in the circuit)
         :return: program state after this operation
         """
-        self.p += Program([H(self.from_map(i)) for i in range(self.n)])
-        return self.p
+        self.circuit.append([cirq.H(self.qubits[i]) for i in range(self.n)],
+                            strategy=cirq.InsertStrategy.NEW_THEN_INLINE)
+        return self.circuit
 
     def insert_Gs(self, k):
         """
@@ -76,7 +67,7 @@ class Grover:
         for _ in range(total_gs):
             self.G(k)
 
-        return self.p
+        return self.circuit
 
     def G(self, k):
         """
@@ -98,9 +89,9 @@ class Grover:
         self.all_hadamards()
 
         # negate everything by adding a Z to the first qubit
-        self.p += Program(Z(self.from_map(0)))
+        self.circuit.append(cirq.Z(self.qubits[0]))
 
-        return self.p
+        return self.circuit
 
     def z_f(self, k):
         """
@@ -111,26 +102,31 @@ class Grover:
 
         # add a X for every bit in k that is 0
         k_bits = self.int_to_bits(k, self.n)
-        self.p += Program([X(self.from_map(k_b)) for k_b in range(len(k_bits)) if k_bits[k_b] == 0])
+        self.circuit.append([cirq.X(self.qubits[k_b]) for k_b in range(len(k_bits)) if k_bits[k_b] == 0],
+                            strategy=cirq.InsertStrategy.NEW_THEN_INLINE)
+        # self.p += Program([X(self.from_map(k_b)) for k_b in range(len(k_bits)) if k_bits[k_b] == 0])
 
         # add a controlled Z to the first (arbitrary) qubit. All other qubits will be controls
-        Z_gate = Z(self.from_map(0))
+        Z_gate = cirq.Z(self.qubits[0])
         for i in range(self.n-1):
-            Z_gate.controlled(self.from_map(i+1))
-        self.p += Program(Z_gate)
+            Z_gate = Z_gate.controlled_by(self.qubits[i+1])
+            # Z_gate = cirq.ControlledGate(cirq.Z).on(self.qubits[0], self.qubits[i+1])
+        self.circuit.append([Z_gate], strategy=cirq.InsertStrategy.NEW_THEN_INLINE)
 
         # add a X for every bit in k that is 0 (again)
-        self.p += Program([X(self.from_map(k_b)) for k_b in range(len(k_bits)) if k_bits[k_b] == 0])
+        self.circuit.append([cirq.X(self.qubits[k_b]) for k_b in range(len(k_bits)) if k_bits[k_b] == 0],
+                            strategy=cirq.InsertStrategy.NEW_THEN_INLINE)
 
-        return self.p
+        return self.circuit
 
     def measure_ro(self):
         """
         Measure every qubit but the last one
         :return: program state after this operation
         """
-        self.p += Program([MEASURE(self.from_map(i), self.ro[i]) for i in range(self.n)])
-        return self.p
+        self.circuit.append([cirq.measure(self.qubits[i]) for i in range(self.n)],
+                            strategy=cirq.InsertStrategy.NEW_THEN_INLINE)
+        return self.circuit
 
     @staticmethod
     def num_tries(n):
@@ -150,95 +146,59 @@ class Grover:
         return y
 
 
-def run_grover(n, k, numshots=5, sim_wave=False, print_p=False, use_aspen=True):
+def run_grover(n, k, numshots=5, print_p=False):
     """
     Run a single experiment of Grover
     :param n: the number of bits to use in the circuit
     :param k: the specific value for which f(x) returns 1
     :param numshots: number of times to run simulation (if enabled)
-    :param sim_wave: generate waveform (if True) or run simulation (if False)
     :param print_p: print the circuit prior to running
-    :param use_aspen: whether to compile using the Aspen QPC when available (3 <= n <= 5)
     :return:
     """
 
     # setup the experiment
-    qvm = get_qc('Aspen-4-{}Q-A-qvm'.format(n) if use_aspen else '9q-square-qvm')
-    gr = Grover(n, qubits=(qvm.qubits() if use_aspen else None))
-    p = gr.build_circuit(k)
+    gv = Grover(n)
+    circuit = gv.build_circuit(k)
+
     if print_p:
-        print(p)
+        print(circuit)
+        return
 
-    with local_qvm():
-        if sim_wave:
-            # debug waveform
-            wf_sim = WavefunctionSimulator()
-            wavefunction = wf_sim.wavefunction(p)
+    # start simulator
+    simulator = cirq.Simulator()
+    t = time.time()
+    result = simulator.run(circuit, repetitions=numshots)
+    return_time = time.time() - t
+    print(result)
 
-            # The amplitudes are stored as a numpy array on the Wavefunction object
-            print(wavefunction.amplitudes)
-            prob_dict = wavefunction.get_outcome_probs()  # extracts the probabilities of outcomes as a dict
-            print(prob_dict)
-        else:
-            # multiple trials - check to make sure that the probability for getting the given outcome is 1
-            p.wrap_in_numshots_loop(numshots)
-
-            # actually perform the measurement
-            t = time.time()
-            executable = qvm.compile(p)
-            result = qvm.run(executable)
-            return_time = time.time() - t
-
-            # count the different occurrences and pick the largest one
-            counts = {}
-            for i in result:
-                found = False
-                for key in counts.keys():
-                    if str(i) == key:
-                        found = True
-                        break
-                if not found:
-                    counts[str(i)] = 1
-                else:
-                    counts[str(i)] += 1
-            print(counts)
-
-            most_probable = None
-            for key in counts.keys():
-                if most_probable is None or counts[key] > counts[most_probable]:
-                    most_probable = key
-
-            print('Most probable result: k={}'.format(most_probable))
-            print()
-
-            return result, return_time
+    return result, return_time
 
 
 def main():
     n = 2   # the number of bits in f: {0,1}^n → {0,1}
     k = 2   # f(x = k) = 1, f(x != k) = 0
     # run the experiment with specific n and k
-    run_grover(n, k, numshots=2**n, sim_wave=False, use_aspen=True)
+    run_grover(n, k, numshots=2**n)
 
     n = 3   # the number of bits in f: {0,1}^n → {0,1}
     k = 2   # f(x = k) = 1, f(x != k) = 0
     # run the experiment with specific n and k
-    run_grover(n, k, numshots=2**n, sim_wave=False, use_aspen=True)
+    run_grover(n, k, numshots=2**n)
 
     n = 4   # the number of bits in f: {0,1}^n → {0,1}
     k = 2   # f(x = k) = 1, f(x != k) = 0
     # run the experiment with specific n and k
-    run_grover(n, k, numshots=2**n, sim_wave=False, use_aspen=True)
+    run_grover(n, k, numshots=2**n)
 
     n = 5   # the number of bits in f: {0,1}^n → {0,1}
     k = 2   # f(x = k) = 1, f(x != k) = 0
     # run the experiment with specific n and k
-    run_grover(n, k, numshots=2**n, sim_wave=False, use_aspen=True)
+    run_grover(n, k, numshots=2**n)
 
     n = 6   # the number of bits in f: {0,1}^n → {0,1}
     k = 2   # f(x = k) = 1, f(x != k) = 0
     # run the experiment with specific n and k
-    run_grover(n, k, numshots=2**n, sim_wave=False, use_aspen=True)
+    run_grover(n, k, numshots=2**n)
 
 
 if __name__ == '__main__':
