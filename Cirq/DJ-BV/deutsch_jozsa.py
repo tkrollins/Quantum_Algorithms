@@ -1,5 +1,6 @@
 import cirq
 import time
+import numpy as np
 
 
 class Deutsch_Jozsa():
@@ -102,15 +103,17 @@ class Deutsch_Jozsa():
 
 def run_DJ(f):
     # setup the experiment
-    bv = Deutsch_Jozsa(f)
-    circuit = bv.build_circuit()
+    dj = Deutsch_Jozsa(f)
+    circuit = dj.build_circuit()
 
     # start simulator
     simulator = cirq.Simulator()
     t = time.time()
     result = simulator.run(circuit, repetitions=10)
     return_time = time.time() - t
-    print(result)
+    result_matrix = np.array([np.array(q).astype(int) for q in result.measurements.values()])
+    result_matrix = result_matrix.transpose()
+    print(result_matrix)
 
     return result, return_time
 
