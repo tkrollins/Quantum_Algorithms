@@ -170,13 +170,15 @@ def run_grover(n, k, numshots=5, print_p=False):
     result = simulator.run(circuit, repetitions=numshots)
     return_time = time.time() - t
     hist = result.histogram(key='x')
+    print(hist)
+
     best_key = None
     for k in hist.keys():
         if best_key is None:
             best_key = k
         elif hist[k] > hist[best_key]:
             best_key = k
-    print('best result: {} ({}/{})'.format(best_key, hist[best_key], numshots))
+    print('most probable result: k={} ({}/{})'.format(best_key, hist[best_key], numshots))
 
     return result, return_time
 
