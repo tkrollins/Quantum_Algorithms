@@ -115,9 +115,9 @@ class Deutsch_Jozsa():
         return self.p
 
 
-def run_DJ(f):
+def run_DJ(f, topology='Aspen-4-6Q-A-qvm'):
     # set topology of qvm
-    qvm = get_qc('Aspen-4-6Q-A-qvm')
+    qvm = get_qc(topology)
     # qvm.compiler.client.timeout = 30  # number of seconds
     qubits = qvm.qubits()
 
@@ -126,7 +126,9 @@ def run_DJ(f):
     p = dj.build_circuit()
 
     # multiple trials - check to make sure that the probability for getting the given outcome is 1
-    p.wrap_in_numshots_loop(5)
+    p.wrap_in_numshots_loop(10)
+
+    print(p.out())
 
     with local_qvm():
         # one way of measuring:
@@ -135,6 +137,8 @@ def run_DJ(f):
         print('Results:')
         print(result)
         print()
+
+        return result
 
 
 # Balanced f's, represented by truth table. First n-1 elements are the input bits, element n is the output bit
@@ -180,9 +184,16 @@ f_const_3_1 = [[0,0,0,1], [0,0,1,1], [0,1,0,1], [0,1,1,1], [1,0,0,1], [1,0,1,1],
 f_const_4_1 = [[0,0,0,0,1],[0,0,0,1,1],[0,0,1,0,1],[0,0,1,1,1],[0,1,0,0,1],[0,1,0,1,1],[0,1,1,0,1],[0,1,1,1,1],
            [1,0,0,0,1],[1,0,0,1,1],[1,0,1,0,1],[1,0,1,1,1],[1,1,0,0,1],[1,1,0,1,1],[1,1,1,0,1],[1,1,1,1,1]]
 
-# Will return [0 0 0 1]
-run_DJ(f_bal_3)
-# Will return [0 0 0 0]
-run_DJ(f_const_4_0)
-# Will return [0 0 0 0]
-run_DJ(f_const_4_1)
+def main():
+    run_DJ(f_const_5_0)
+
+    # Will return [0 0 0 1]
+    # run_DJ(f_bal_3)
+    # # Will return [0 0 0 0]
+    # run_DJ(f_const_4_0)
+    # # Will return [0 0 0 0]
+    # run_DJ(f_const_4_1)
+
+
+if __name__ == '__main__':
+    main()

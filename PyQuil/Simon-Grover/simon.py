@@ -142,6 +142,7 @@ def run_Simon(f, naive=False):
     # setup the circuit
     simon = Simon(f, qubits)
     p = simon.build_circuit()
+    print(p.out())
 
     shots = simon.n*2
     # 2n y's will be collected per iteration
@@ -196,11 +197,11 @@ f_4 = [[0,0,0,0, 1,1,1,1], [0,0,0,1, 1,1,1,0], [0,0,1,0, 1,1,0,1], [0,0,1,1, 1,1
        [1,1,0,0, 1,1,0,0], [1,1,0,1, 1,1,0,1], [1,1,1,0, 1,1,1,0], [1,1,1,1, 1,1,1,1]]
 
 
-# Will return [1]
-run_Simon(f_1)
-
-# Will return [1,1]
-run_Simon(f_2)
+# # Will return [1]
+# run_Simon(f_1)
+#
+# # Will return [1,1]
+# run_Simon(f_2)
 
 # Will return [1,1,0]
 run_Simon(f_3)
