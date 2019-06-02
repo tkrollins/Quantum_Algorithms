@@ -124,7 +124,7 @@ class Grover:
         Measure every qubit but the last one
         :return: program state after this operation
         """
-        self.circuit.append([cirq.measure(self.qubits[i]) for i in range(self.n)],
+        self.circuit.append([cirq.measure(*self.qubits, key='x')],
                             strategy=cirq.InsertStrategy.NEW_THEN_INLINE)
         return self.circuit
 
@@ -169,7 +169,14 @@ def run_grover(n, k, numshots=5, print_p=False):
     t = time.time()
     result = simulator.run(circuit, repetitions=numshots)
     return_time = time.time() - t
-    print(result)
+    hist = result.histogram(key='x')
+    best_key = None
+    for k in hist.keys():
+        if best_key is None:
+            best_key = k
+        elif hist[k] > hist[best_key]:
+            best_key = k
+    print('best result: {} ({}/{})'.format(best_key, hist[best_key], numshots))
 
     return result, return_time
 
