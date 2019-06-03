@@ -2,7 +2,7 @@ import numpy as np
 import cirq
 from scipy.linalg import null_space
 import time
-import matplotlib.pyplot as plt
+
 
 class Simon():
 
@@ -192,6 +192,7 @@ def main():
 
     # Will return [1,1,1,1]
     run_Simon(f_4)
+
 
 if __name__ == '__main__':
     main()
