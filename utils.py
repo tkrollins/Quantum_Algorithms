@@ -26,7 +26,7 @@ def compareResults(qvm, qpu):
     frac_equal = row_comp_int.sum() / len(row_comp_int)
     return frac_equal
 
-def DJ_resultCorrectness(qpu_results):
+def DJ_balancedResultsCorrectness(qpu_results):
     """
     Determines fraction of correct results from QPU for DJ.
     Correctness is any row that has at least a single 1.
@@ -35,6 +35,19 @@ def DJ_resultCorrectness(qpu_results):
     """
     correctness = qpu_results.astype(bool)
     correctness = np.array([row.any() for row in correctness])
+    correctness = correctness.astype(int)
+    frac_correct = correctness.sum() / len(correctness)
+    return frac_correct
+
+def DJ_constantResultsCorrectness(qpu_results):
+    """
+    Determines fraction of correct results from QPU for DJ.
+    Correctness is any row that has all 0's.
+    :param qpu_results: matrix of qpu results
+    :return: fraction of correctness
+    """
+    correctness = np.invert(qpu_results.astype(bool))
+    correctness = np.array([row.all() for row in correctness])
     correctness = correctness.astype(int)
     frac_correct = correctness.sum() / len(correctness)
     return frac_correct
