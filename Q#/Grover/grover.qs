@@ -8,7 +8,7 @@
 // but feel free to look up the solution if you get stuck.
 //////////////////////////////////////////////////////////////////////
 
-namespace Quantum.Kata.GroversAlgorithm {
+namespace Grover {
     
     open Microsoft.Quantum.Arrays;
     open Microsoft.Quantum.Intrinsic;

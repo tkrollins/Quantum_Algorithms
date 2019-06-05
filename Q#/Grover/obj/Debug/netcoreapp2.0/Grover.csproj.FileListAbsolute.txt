@@ -1,0 +1,11 @@
+/Users/tkrollins/OneDrive/Courses/CS239/team_penguin/Q#/Grover/bin/Debug/netcoreapp2.0/Grover.deps.json
+/Users/tkrollins/OneDrive/Courses/CS239/team_penguin/Q#/Grover/bin/Debug/netcoreapp2.0/Grover.runtimeconfig.json
+/Users/tkrollins/OneDrive/Courses/CS239/team_penguin/Q#/Grover/bin/Debug/netcoreapp2.0/Grover.runtimeconfig.dev.json
+/Users/tkrollins/OneDrive/Courses/CS239/team_penguin/Q#/Grover/bin/Debug/netcoreapp2.0/Grover.dll
+/Users/tkrollins/OneDrive/Courses/CS239/team_penguin/Q#/Grover/bin/Debug/netcoreapp2.0/Grover.pdb
+/Users/tkrollins/OneDrive/Courses/CS239/team_penguin/Q#/Grover/obj/Debug/netcoreapp2.0/Grover.csprojAssemblyReference.cache
+/Users/tkrollins/OneDrive/Courses/CS239/team_penguin/Q#/Grover/obj/Debug/netcoreapp2.0/Grover.csproj.CoreCompileInputs.cache
+/Users/tkrollins/OneDrive/Courses/CS239/team_penguin/Q#/Grover/obj/Debug/netcoreapp2.0/Grover.AssemblyInfoInputs.cache
+/Users/tkrollins/OneDrive/Courses/CS239/team_penguin/Q#/Grover/obj/Debug/netcoreapp2.0/Grover.AssemblyInfo.cs
+/Users/tkrollins/OneDrive/Courses/CS239/team_penguin/Q#/Grover/obj/Debug/netcoreapp2.0/Grover.dll
+/Users/tkrollins/OneDrive/Courses/CS239/team_penguin/Q#/Grover/obj/Debug/netcoreapp2.0/Grover.pdb

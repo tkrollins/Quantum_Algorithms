@@ -8,7 +8,7 @@
 // but feel free to look up the solution if you get stuck.
 //////////////////////////////////////////////////////////////////////
 
-namespace Quantum.Kata.SimonsAlgorithm {
+namespace Simon {
     
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
