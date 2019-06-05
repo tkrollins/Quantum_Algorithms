@@ -280,7 +280,7 @@
         return isConstantFunction;
     }
 
-    operation DJ (N : Int) : Bool
+    operation DJ_balanced (N : Int) : Bool
     {
         return DJ_Algorithm_Reference(N, Oracle_OddNumberOfOnes_Reference);
     }
