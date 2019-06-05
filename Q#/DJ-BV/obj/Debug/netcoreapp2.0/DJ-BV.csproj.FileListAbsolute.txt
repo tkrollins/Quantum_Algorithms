@@ -1,0 +1,11 @@
+/Users/tkrollins/OneDrive/Courses/CS239/team_penguin/Q#/DJ-BV/obj/Debug/netcoreapp2.0/DJ-BV.csprojAssemblyReference.cache
+/Users/tkrollins/OneDrive/Courses/CS239/team_penguin/Q#/DJ-BV/obj/Debug/netcoreapp2.0/DJ-BV.csproj.CoreCompileInputs.cache
+/Users/tkrollins/OneDrive/Courses/CS239/team_penguin/Q#/DJ-BV/obj/Debug/netcoreapp2.0/DJ-BV.AssemblyInfoInputs.cache
+/Users/tkrollins/OneDrive/Courses/CS239/team_penguin/Q#/DJ-BV/obj/Debug/netcoreapp2.0/DJ-BV.AssemblyInfo.cs
+/Users/tkrollins/OneDrive/Courses/CS239/team_penguin/Q#/DJ-BV/bin/Debug/netcoreapp2.0/DJ-BV.deps.json
+/Users/tkrollins/OneDrive/Courses/CS239/team_penguin/Q#/DJ-BV/bin/Debug/netcoreapp2.0/DJ-BV.runtimeconfig.json
+/Users/tkrollins/OneDrive/Courses/CS239/team_penguin/Q#/DJ-BV/bin/Debug/netcoreapp2.0/DJ-BV.runtimeconfig.dev.json
+/Users/tkrollins/OneDrive/Courses/CS239/team_penguin/Q#/DJ-BV/bin/Debug/netcoreapp2.0/DJ-BV.dll
+/Users/tkrollins/OneDrive/Courses/CS239/team_penguin/Q#/DJ-BV/bin/Debug/netcoreapp2.0/DJ-BV.pdb
+/Users/tkrollins/OneDrive/Courses/CS239/team_penguin/Q#/DJ-BV/obj/Debug/netcoreapp2.0/DJ-BV.dll
+/Users/tkrollins/OneDrive/Courses/CS239/team_penguin/Q#/DJ-BV/obj/Debug/netcoreapp2.0/DJ-BV.pdb
