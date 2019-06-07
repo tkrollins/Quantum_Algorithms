@@ -40,9 +40,15 @@ namespace Grover
                     bool[] pattern = p_list.ToArray();
 
                     // Set iterations:
-                    int iterations = 1;
+                    //np.pi / (4 * np.arcsin(1 / np.sqrt(n))) - 0.5
+                    int iterations = (int) Math.Floor(Math.PI / (4 * Math.Asin(1 / Math.Sqrt(n))));
+                    if (iterations == 0) {
+                        iterations = 1;
+                    }
+                    //Console.WriteLine($"iterations: {iterations}");
 
                     long[] tempTimes = new long[ITER];
+                    int correct = 0;
                     for (int i=0; i < ITER; i++)
                     {
                         var watch = System.Diagnostics.Stopwatch.StartNew();
@@ -52,9 +58,17 @@ namespace Grover
                         watch.Stop();
                         tempTimes[i] = watch.ElapsedTicks;
                         //Console.WriteLine(string.Join(", ", r));
+
+                        // measure correctness from the qvm:
+                        for (int j=0; j<n; j++) {
+                            if ((r[j] == 1) && pattern[j]) {
+                                correct += 1;
+                                break;
+                            }
+                        }
                     }
                     times[n-1] = (long)tempTimes.Average();
-                    Console.WriteLine($"clock cycles for n={n}: {times[n-1]}");
+                    Console.WriteLine($"clock cycles for n={n}: {times[n-1]} --- correct: {correct} out of {ITER}");
                 }
                 Console.WriteLine("["+string.Join(", ", times)+"]");
             }

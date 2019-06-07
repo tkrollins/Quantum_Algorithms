@@ -1,0 +1,11 @@
+clock cycles for n=1: 2178 --- correct: 483 out of 1000
+clock cycles for n=2: 2887 --- correct: 1000 out of 1000
+clock cycles for n=3: 4449 --- correct: 875 out of 1000
+clock cycles for n=4: 5696 --- correct: 723 out of 1000
+clock cycles for n=5: 7509 --- correct: 621 out of 1000
+clock cycles for n=6: 6341 --- correct: 574 out of 1000
+clock cycles for n=7: 10398 --- correct: 601 out of 1000
+clock cycles for n=8: 9355 --- correct: 553 out of 1000
+clock cycles for n=9: 10132 --- correct: 528 out of 1000
+clock cycles for n=10: 11580 --- correct: 496 out of 1000
+[2178, 2887, 4449, 5696, 7509, 6341, 10398, 9355, 10132, 11580]
