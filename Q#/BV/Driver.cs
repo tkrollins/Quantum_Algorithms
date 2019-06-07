@@ -31,6 +31,7 @@ namespace BV
                         a_list.Insert(0, 0);
                     }
                     long[] a_bits = a_list.ToArray();
+                    // let a_bits = IntAsBoolArray(a, n);
 
                     // Make a long to hold value of b:
                     const int b = 1;

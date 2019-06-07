@@ -1,0 +1,11 @@
+clock cycles for n=1: 889 --- mistakes: 0 out of 1000
+clock cycles for n=2: 1499 --- mistakes: 0 out of 1000
+clock cycles for n=3: 2096 --- mistakes: 0 out of 1000
+clock cycles for n=4: 2827 --- mistakes: 0 out of 1000
+clock cycles for n=5: 3502 --- mistakes: 0 out of 1000
+clock cycles for n=6: 4180 --- mistakes: 0 out of 1000
+clock cycles for n=7: 4791 --- mistakes: 0 out of 1000
+clock cycles for n=8: 5524 --- mistakes: 0 out of 1000
+clock cycles for n=9: 6294 --- mistakes: 0 out of 1000
+clock cycles for n=10: 7120 --- mistakes: 0 out of 1000
+[889, 1499, 2096, 2827, 3502, 4180, 4791, 5524, 6294, 7120]

@@ -9,3 +9,9 @@
 /Users/tkrollins/OneDrive/Courses/CS239/team_penguin/Q#/Grover/obj/Debug/netcoreapp2.0/Grover.AssemblyInfo.cs
 /Users/tkrollins/OneDrive/Courses/CS239/team_penguin/Q#/Grover/obj/Debug/netcoreapp2.0/Grover.dll
 /Users/tkrollins/OneDrive/Courses/CS239/team_penguin/Q#/Grover/obj/Debug/netcoreapp2.0/Grover.pdb
+D:\Git\UCLA\QuantumProgramming\Projects\Q#\Grover\obj\Debug\netcoreapp2.0\Grover.csprojAssemblyReference.cache
+D:\Git\UCLA\QuantumProgramming\Projects\Q#\Grover\obj\Debug\netcoreapp2.0\Grover.csproj.CoreCompileInputs.cache
+D:\Git\UCLA\QuantumProgramming\Projects\Q#\Grover\obj\Debug\netcoreapp2.0\Grover.AssemblyInfoInputs.cache
+D:\Git\UCLA\QuantumProgramming\Projects\Q#\Grover\obj\Debug\netcoreapp2.0\Grover.AssemblyInfo.cs
+D:\Git\UCLA\QuantumProgramming\Projects\Q#\Grover\obj\Debug\netcoreapp2.0\Grover.dll
+D:\Git\UCLA\QuantumProgramming\Projects\Q#\Grover\obj\Debug\netcoreapp2.0\Grover.pdb
