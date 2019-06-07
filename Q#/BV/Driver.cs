@@ -22,7 +22,7 @@ namespace BV
                 for (int n=1; n<=MAX_N; n++)
                 {
                     // Make a long array to hold bits of a:
-                    long a = (long)Math.Pow(2, n-1)-1;
+                    long a = 0; //(long) Math.Pow(2, n)-1;
                     string s = Convert.ToString(a, 2); //Convert to binary in a string
                     var a_list = s.Select(c => long.Parse(c.ToString())) // convert each char to int
                                   .ToList(); // Convert IEnumerable from select to Array

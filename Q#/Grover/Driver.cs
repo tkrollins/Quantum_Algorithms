@@ -23,7 +23,7 @@ namespace Grover
                 for (int n=1; n<=MAX_N; n++)
                 {
                     // Make the pattern:
-                    long a = 1;
+                    long a = 0; //(long) Math.Pow(2, n)-1;
                     string s = Convert.ToString(a, 2); //Convert to binary in a string
                     var parsed = s.Select(c => long.Parse(c.ToString())) // convert each char to long
                                   .ToArray(); // Convert IEnumerable from select to Array
@@ -38,6 +38,7 @@ namespace Grover
                         p_list.Insert(0, false);
                     }
                     bool[] pattern = p_list.ToArray();
+                    //Console.WriteLine("Pattern: " + string.Join(", ", pattern));
 
                     // Set iterations:
                     //np.pi / (4 * np.arcsin(1 / np.sqrt(n))) - 0.5
