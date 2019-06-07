@@ -259,15 +259,8 @@
         }
     }
 
-    operation BV_custom (vars : Int[]) : Int[]
+    operation BV_custom (vars : Int[], a : Int[], b : Int) : Int[]
     {
-        // simple fix, since we can only pass in a single variable into this operator... M=length of vars:
-        // N = vars[0]
-        // a = vars[1 ... M-2]
-        // b = vars[M-1]
-        mutable N = vars[0];
-        mutable a = vars[1..(Length(vars)-2)];
-        mutable b = vars[Length(vars)-1];
         // The two underscores are for passing the Qubits automatically without knowing their reference at compile time.
         return BV_Algorithm_Reference(N, Oracle_BV_Custom_Reference(_, _, a, b));
     }

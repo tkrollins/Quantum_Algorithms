@@ -30,19 +30,12 @@ namespace BV
                     Console.WriteLine($"a bits: {a_bits}");
                     const int b = 1;
 
-                    int[] vars = new int[1 + n + 1];
-                    vars[0] = n;
-                    for (int z = 0; z < n; z++) {
-                        vars[z+1] = a_bits[z];
-                    }
-                    vars[n+1] = b;
-
                     long[] tempTimes = new long[ITER];
                     for (int i=0; i < ITER; i++)
                     {
                         var watch = System.Diagnostics.Stopwatch.StartNew();
 
-                        var r = BV_custom.Run(qsim, vars).Result;
+                        var r = BV_custom.Run(qsim, n, a_bits, b).Result;
                         watch.Stop();
                         tempTimes[i] = watch.ElapsedTicks;
                     }
