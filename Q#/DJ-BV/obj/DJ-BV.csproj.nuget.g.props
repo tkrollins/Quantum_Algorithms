@@ -3,9 +3,9 @@
   <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
     <RestoreSuccess Condition=" '$(RestoreSuccess)' == '' ">True</RestoreSuccess>
     <RestoreTool Condition=" '$(RestoreTool)' == '' ">NuGet</RestoreTool>
-    <ProjectAssetsFile Condition=" '$(ProjectAssetsFile)' == '' ">/Users/tkrollins/OneDrive/Courses/CS239/team_penguin/Q#/DJ-BV/obj/project.assets.json</ProjectAssetsFile>
-    <NuGetPackageRoot Condition=" '$(NuGetPackageRoot)' == '' ">/Users/tkrollins/.nuget/packages/</NuGetPackageRoot>
-    <NuGetPackageFolders Condition=" '$(NuGetPackageFolders)' == '' ">/Users/tkrollins/.nuget/packages/;/usr/local/share/dotnet/sdk/NuGetFallbackFolder</NuGetPackageFolders>
+    <ProjectAssetsFile Condition=" '$(ProjectAssetsFile)' == '' ">D:\Git\UCLA\QuantumProgramming\Projects\Q#\DJ-BV\obj\project.assets.json</ProjectAssetsFile>
+    <NuGetPackageRoot Condition=" '$(NuGetPackageRoot)' == '' ">$(UserProfile)\.nuget\packages\</NuGetPackageRoot>
+    <NuGetPackageFolders Condition=" '$(NuGetPackageFolders)' == '' ">C:\Users\zharr\.nuget\packages\;C:\Program Files\dotnet\sdk\NuGetFallbackFolder</NuGetPackageFolders>
     <NuGetProjectStyle Condition=" '$(NuGetProjectStyle)' == '' ">PackageReference</NuGetProjectStyle>
     <NuGetToolVersion Condition=" '$(NuGetToolVersion)' == '' ">4.9.4</NuGetToolVersion>
   </PropertyGroup>
@@ -13,10 +13,10 @@
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
   </PropertyGroup>
   <ImportGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
-    <Import Project="$(NuGetPackageRoot)microsoft.quantum.development.kit/0.7.1905.3109/build/Microsoft.Quantum.Development.Kit.props" Condition="Exists('$(NuGetPackageRoot)microsoft.quantum.development.kit/0.7.1905.3109/build/Microsoft.Quantum.Development.Kit.props')" />
-    <Import Project="$(NuGetPackageRoot)microsoft.netcore.app/2.0.0/build/netcoreapp2.0/Microsoft.NETCore.App.props" Condition="Exists('$(NuGetPackageRoot)microsoft.netcore.app/2.0.0/build/netcoreapp2.0/Microsoft.NETCore.App.props')" />
+    <Import Project="$(NuGetPackageRoot)microsoft.quantum.development.kit\0.7.1905.3109\build\Microsoft.Quantum.Development.Kit.props" Condition="Exists('$(NuGetPackageRoot)microsoft.quantum.development.kit\0.7.1905.3109\build\Microsoft.Quantum.Development.Kit.props')" />
+    <Import Project="$(NuGetPackageRoot)microsoft.netcore.app\2.0.0\build\netcoreapp2.0\Microsoft.NETCore.App.props" Condition="Exists('$(NuGetPackageRoot)microsoft.netcore.app\2.0.0\build\netcoreapp2.0\Microsoft.NETCore.App.props')" />
   </ImportGroup>
   <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
-    <PkgMicrosoft_Quantum_Development_Kit Condition=" '$(PkgMicrosoft_Quantum_Development_Kit)' == '' ">/Users/tkrollins/.nuget/packages/microsoft.quantum.development.kit/0.7.1905.3109</PkgMicrosoft_Quantum_Development_Kit>
+    <PkgMicrosoft_Quantum_Development_Kit Condition=" '$(PkgMicrosoft_Quantum_Development_Kit)' == '' ">C:\Users\zharr\.nuget\packages\microsoft.quantum.development.kit\0.7.1905.3109</PkgMicrosoft_Quantum_Development_Kit>
   </PropertyGroup>
 </Project>
