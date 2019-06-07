@@ -143,22 +143,41 @@ namespace Grover {
     //////////////////////////////////////////////////////////////////
     
     // Task 3.1. Grover's search
-    operation GroversSearch_Reference (register : Qubit[], oracle : ((Qubit[], Qubit) => Unit is Adj), iterations : Int) : Unit
+    operation GroversSearch_Reference (register : Qubit[], pattern : Bool[], iterations : Int) : Unit
     is Adj {
-        
+
+        let oracle = Oracle_ArbitraryPattern_Reference(_, _, pattern);
         let phaseOracle = OracleConverter_Reference(oracle);
         HadamardTransform_Reference(register);
-            
+
         for (i in 1 .. iterations) {
             GroverIteration_Reference(register, phaseOracle);
         }
     }
 
-    operation Grover_custom (pattern : Bool[], iterations : Int) : Unit
+    operation Grover_custom (N : Int, pattern : Bool[], iterations : Int) : Int[]
     {
-        // Make an operation that passes the oracle into GroversSearch_Reference:
-        let groverOracle = Oracle_ArbitraryPattern_Reference(_, _, pattern);
-        return GroversSearch_Reference(_, groverOracle, iterations);
+        // allocate N qubits for input register and 1 qubit for output
+        using ((register, y) = (Qubit[N], Qubit())) {
+
+            // Make an operation that passes the oracle into GroversSearch_Reference:
+            //let groverOracle = Oracle_ArbitraryPattern_Reference(register, y, pattern);
+            GroversSearch_Reference(register, pattern, iterations);
+
+            // measure all qubits of the input register;
+            // the result of each measurement is converted to an Int
+            mutable r = new Int[N];
+            for (i in 0 .. N - 1) {
+                if (M(register[i]) != Zero) {
+                    set r w/= i <- 1;
+                }
+            }
+
+            // before releasing the qubits make sure they are all in |0⟩ state
+            ResetAll(register);
+            Reset(y);
+            return r;
+        }
     }
     
 }

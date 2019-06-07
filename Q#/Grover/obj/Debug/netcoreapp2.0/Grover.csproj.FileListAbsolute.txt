@@ -15,3 +15,8 @@ D:\Git\UCLA\QuantumProgramming\Projects\Q#\Grover\obj\Debug\netcoreapp2.0\Grover
 D:\Git\UCLA\QuantumProgramming\Projects\Q#\Grover\obj\Debug\netcoreapp2.0\Grover.AssemblyInfo.cs
 D:\Git\UCLA\QuantumProgramming\Projects\Q#\Grover\obj\Debug\netcoreapp2.0\Grover.dll
 D:\Git\UCLA\QuantumProgramming\Projects\Q#\Grover\obj\Debug\netcoreapp2.0\Grover.pdb
+D:\Git\UCLA\QuantumProgramming\Projects\Q#\Grover\bin\Debug\netcoreapp2.0\Grover.deps.json
+D:\Git\UCLA\QuantumProgramming\Projects\Q#\Grover\bin\Debug\netcoreapp2.0\Grover.runtimeconfig.json
+D:\Git\UCLA\QuantumProgramming\Projects\Q#\Grover\bin\Debug\netcoreapp2.0\Grover.runtimeconfig.dev.json
+D:\Git\UCLA\QuantumProgramming\Projects\Q#\Grover\bin\Debug\netcoreapp2.0\Grover.dll
+D:\Git\UCLA\QuantumProgramming\Projects\Q#\Grover\bin\Debug\netcoreapp2.0\Grover.pdb
