@@ -50,7 +50,7 @@ namespace Grover {
     
     // Task 1.3. Arbitrary bit pattern oracle
     operation Oracle_ArbitraryPattern_Reference (queryRegister : Qubit[], target : Qubit, pattern : Bool[]) : Unit
-    is Adj {        
+    is Adj {
         (ControlledOnBitString(pattern, X))(queryRegister, target);
     }
     
@@ -154,6 +154,11 @@ namespace Grover {
         }
     }
 
-
+    operation Grover_custom (pattern : Bool[], iterations : Int) : Unit
+    {
+        // Make an operation that passes the oracle into GroversSearch_Reference:
+        let groverOracle = Oracle_ArbitraryPattern_Reference(_, _, pattern);
+        return GroversSearch_Reference(_, groverOracle, iterations);
+    }
     
 }

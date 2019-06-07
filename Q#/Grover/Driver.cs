@@ -27,7 +27,7 @@ namespace Grover
                         var watch = System.Diagnostics.Stopwatch.StartNew();
 
                         // pass in n, a_bits, and b into the BV operation:
-                        var r = GroversSearch_Reference.Run(qsim).Result;
+                        var r = Grover_custom.Run(qsim, pattern, iterations).Result;
                         watch.Stop();
                         tempTimes[i] = watch.ElapsedTicks;
                     }
