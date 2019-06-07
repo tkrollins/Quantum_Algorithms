@@ -259,7 +259,7 @@
         }
     }
 
-    operation BV_custom (vars : Int[], a : Int[], b : Int) : Int[]
+    operation BV_custom (N : Int, a : Int[], b : Int) : Int[]
     {
         // The two underscores are for passing the Qubits automatically without knowing their reference at compile time.
         return BV_Algorithm_Reference(N, Oracle_BV_Custom_Reference(_, _, a, b));

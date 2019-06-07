@@ -237,39 +237,6 @@
         }
     }
 
-    //
-    //
-    //
-    //
-    // CUSTOM Uf for BV:
-    operation Oracle_BV_Custom_Reference (x : Qubit[], y : Qubit, a : Int[], b : Int) : Unit
-    is Adj {
-        EqualityFactI(Length(x), Length(a), "Arrays should have the same length");
-
-        // if b is not even, then we need to flip the helper qubit (the last one)
-        if (b % 2 != 0) {
-            X(x[Length(x) - 1]);
-        }
-
-        // wherever the _a bit in a is 1, we insert a CNOT into the system targeting the helper bit
-        for (i in 0 .. Length(a) - 1) {
-            if (a[i] == 1) {
-                CNOT(x[i], y);
-            }
-        }
-    }
-
-    operation BV_custom (N : Int, a : Int[], b : Int) : Int[]
-    {
-        // The two underscores are for passing the Qubits automatically without knowing their reference at compile time.
-        return BV_Algorithm_Reference(N, Oracle_BV_Custom_Reference(_, _, a, b));
-    }
-    //
-    //
-    //
-    //
-    //
-
 
     //////////////////////////////////////////////////////////////////
     // Part III. Deutsch-Jozsa Algorithm
