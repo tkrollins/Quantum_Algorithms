@@ -9,3 +9,15 @@ clock cycles for n=8: 9355 --- correct: 553 out of 1000
 clock cycles for n=9: 10132 --- correct: 528 out of 1000
 clock cycles for n=10: 11580 --- correct: 496 out of 1000
 [2178, 2887, 4449, 5696, 7509, 6341, 10398, 9355, 10132, 11580]
+
+clock cycles for n=1: 2372 --- correct: 505 out of 1000
+clock cycles for n=2: 3186 --- correct: 1000 out of 1000
+clock cycles for n=3: 4646 --- correct: 867 out of 1000
+clock cycles for n=4: 5718 --- correct: 714 out of 1000
+clock cycles for n=5: 8018 --- correct: 611 out of 1000
+clock cycles for n=6: 9001 --- correct: 567 out of 1000
+clock cycles for n=7: 9735 --- correct: 587 out of 1000
+clock cycles for n=8: 9525 --- correct: 512 out of 1000
+clock cycles for n=9: 10107 --- correct: 534 out of 1000
+clock cycles for n=10: 11323 --- correct: 510 out of 1000
+[2372, 3186, 4646, 5718, 8018, 9001, 9735, 9525, 10107, 11323]

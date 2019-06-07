@@ -60,11 +60,15 @@ namespace Grover
                         //Console.WriteLine(string.Join(", ", r));
 
                         // measure correctness from the qvm:
+                        bool mistake = false;
                         for (int j=0; j<n; j++) {
-                            if ((r[j] == 1) && pattern[j]) {
-                                correct += 1;
+                            if ((r[j] == 1) != pattern[j]) {
+                                mistake = true;
                                 break;
                             }
+                        }
+                        if (!mistake) {
+                            correct += 1;
                         }
                     }
                     times[n-1] = (long)tempTimes.Average();
