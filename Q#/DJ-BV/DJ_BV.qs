@@ -277,10 +277,39 @@
         return isConstantFunction;
     }
 
-    operation DJ_balanced (N : Int) : Bool
+    // Creates DJ circuit with balanced Uf based on odd number of ones in input
+    // Inputs:
+    //      1) the number of qubits in the input register N for the function f
+    operation DJ_balanced_odd (N : Int) : Bool
     {
         return DJ_Algorithm_Reference(N, Oracle_OddNumberOfOnes_Reference);
     }
+
+    // Creates DJ circuit with balanced Uf based on odd number of ones in input
+    // Inputs:
+    //      1) the number of qubits in the input register N for the function f
+    operation DJ_balanced_Kth_ref (N : Int) : Bool
+    {
+        return DJ_Algorithm_Reference(N, Oracle_Kth_Qubit_Reference(_,_,N/2));
+    }
+
+    // Creates DJ circuit with balanced Uf based on odd number of ones in input
+    // Inputs:
+    //      1) the number of qubits in the input register N for the function f
+    operation DJ_constant_zero (N : Int) : Bool
+    {
+        return DJ_Algorithm_Reference(N, Oracle_Zero_Reference);
+    }
+
+    // Creates DJ circuit with balanced Uf based on odd number of ones in input
+    // Inputs:
+    //      1) the number of qubits in the input register N for the function f
+    operation DJ_constant_one (N : Int) : Bool
+    {
+        return DJ_Algorithm_Reference(N, Oracle_One_Reference);
+    }
+    
+    
 
 
     //////////////////////////////////////////////////////////////////

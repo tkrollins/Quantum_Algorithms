@@ -983,30 +983,28 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\zharr\\.nuget\\packages\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "/Users/tkrollins/.nuget/packages/": {},
+    "/usr/local/share/dotnet/sdk/NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Git\\UCLA\\QuantumProgramming\\Projects\\Q#\\DJ-BV\\DJ-BV.csproj",
+      "projectUniqueName": "/Users/tkrollins/OneDrive/Courses/CS239/team_penguin/Q#/DJ-BV/DJ-BV.csproj",
       "projectName": "DJ-BV",
-      "projectPath": "D:\\Git\\UCLA\\QuantumProgramming\\Projects\\Q#\\DJ-BV\\DJ-BV.csproj",
-      "packagesPath": "C:\\Users\\zharr\\.nuget\\packages\\",
-      "outputPath": "D:\\Git\\UCLA\\QuantumProgramming\\Projects\\Q#\\DJ-BV\\obj\\",
+      "projectPath": "/Users/tkrollins/OneDrive/Courses/CS239/team_penguin/Q#/DJ-BV/DJ-BV.csproj",
+      "packagesPath": "/Users/tkrollins/.nuget/packages/",
+      "outputPath": "/Users/tkrollins/OneDrive/Courses/CS239/team_penguin/Q#/DJ-BV/obj/",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\zharr\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "/Users/tkrollins/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp2.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
