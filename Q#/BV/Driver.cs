@@ -11,7 +11,7 @@ namespace BV
     {
         static void Main(string[] args)
         {
-            const int ITER = 100;
+            const int ITER = 1000;
             const int MAX_N = 10;
 
             using (var qsim = new QuantumSimulator())
@@ -21,9 +21,8 @@ namespace BV
 
                 for (int n=1; n<=MAX_N; n++)
                 {
-                    // Make a and b for this n:
+                    // Make a long array to hold bits of a:
                     long a = (long)Math.Pow(2, n-1)-1;
-                    Console.WriteLine(a);
                     string s = Convert.ToString(a, 2); //Convert to binary in a string
                     var a_list = s.Select(c => long.Parse(c.ToString())) // convert each char to int
                                   .ToList(); // Convert IEnumerable from select to Array
@@ -32,20 +31,31 @@ namespace BV
                         a_list.Insert(0, 0);
                     }
                     long[] a_bits = a_list.ToArray();
-                    Console.WriteLine(string.Join(",", a_bits));
+
+                    // Make a long to hold value of b:
                     const int b = 1;
 
                     long[] tempTimes = new long[ITER];
+                    int mistakes = 0;
                     for (int i=0; i < ITER; i++)
                     {
                         var watch = System.Diagnostics.Stopwatch.StartNew();
 
+                        // pass in n, a_bits, and b into the BV operation:
                         var r = BV_custom.Run(qsim, n, new QArray<long>(a_bits), b).Result;
                         watch.Stop();
                         tempTimes[i] = watch.ElapsedTicks;
+
+                        // measure mistakes from the qvm:
+                        for (int j=0; j<n; j++) {
+                            if (r[j] != a_bits[j]) {
+                                mistakes += 1;
+                                break;
+                            }
+                        }
                     }
                     times[n-1] = (long)tempTimes.Average();
-                    Console.WriteLine($"clock cycles for n={n}: {times[n-1]}");
+                    Console.WriteLine($"clock cycles for n={n}: {times[n-1]} --- mistakes: {mistakes} out of {ITER}");
                 }
                 Console.WriteLine("["+string.Join(", ", times)+"]");
             }
