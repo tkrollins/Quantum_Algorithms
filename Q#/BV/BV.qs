@@ -242,7 +242,7 @@
     //
     //
     // CUSTOM Uf for BV:
-    operation Oracle_BV_Custom_Reference (x : Qubit[], y : Qubit, a : Int[], b : Int) : Unit
+    operation Oracle_BV_Custom (x : Qubit[], y : Qubit, a : Int[], b : Int) : Unit
     is Adj {
         EqualityFactI(Length(x), Length(a), "Arrays should have the same length");
 
@@ -262,7 +262,8 @@
     operation BV_custom (N : Int, a : Int[], b : Int) : Int[]
     {
         // The two underscores are for passing the Qubits automatically without knowing their reference at compile time.
-        return BV_Algorithm_Reference(N, Oracle_BV_Custom_Reference(_, _, a, b));
+        let bvOracle = Oracle_BV_Custom(_, _, a, b);
+        return BV_Algorithm_Reference(N, bvOracle);
     }
     //
     //

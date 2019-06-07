@@ -22,12 +22,17 @@ namespace BV
                 for (int n=1; n<=MAX_N; n++)
                 {
                     // Make a and b for this n:
-                    const int a = 5;
+                    long a = (long)Math.Pow(2, n-1)-1;
+                    Console.WriteLine(a);
                     string s = Convert.ToString(a, 2); //Convert to binary in a string
-                    int[] a_bits = s.PadLeft(n, '0') // Add 0's from left
-                                    .Select(c => int.Parse(c.ToString())) // convert each char to int
-                                    .ToArray(); // Convert IEnumerable from select to Array
-                    Console.WriteLine($"a bits: {a_bits}");
+                    var a_list = s.Select(c => long.Parse(c.ToString())) // convert each char to int
+                                  .ToList(); // Convert IEnumerable from select to Array
+                    int length = a_list.Count;
+                    for (int i=0; i < (n - length); i++) {
+                        a_list.Insert(0, 0);
+                    }
+                    long[] a_bits = a_list.ToArray();
+                    Console.WriteLine(string.Join(",", a_bits));
                     const int b = 1;
 
                     long[] tempTimes = new long[ITER];
@@ -35,7 +40,7 @@ namespace BV
                     {
                         var watch = System.Diagnostics.Stopwatch.StartNew();
 
-                        var r = BV_custom.Run(qsim, n, a_bits, b).Result;
+                        var r = BV_custom.Run(qsim, n, new QArray<long>(a_bits), b).Result;
                         watch.Stop();
                         tempTimes[i] = watch.ElapsedTicks;
                     }
