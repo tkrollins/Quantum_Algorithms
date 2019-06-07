@@ -73,7 +73,7 @@ if __name__ == "__main__":
             help='number of shots')
     parse.add_argument('--server', default="http://63.110.29.106:80", 
             help='the server to post job to')
-    parse.add_argument('--lattice', default="Aspen-4-6Q-A",
+    parse.add_argument('--lattice', default="Aspen-4-12Q-A",
             help='the lattice to check against')
     parse.add_argument('--commit', action='store_true', 
             help='send the request to the server')
