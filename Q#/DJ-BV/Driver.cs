@@ -12,7 +12,7 @@ namespace DJ_BV
     {
         static void Main(string[] args)
         {
-            const int ITER = 100;
+            const int ITER = 1000;
             const int MAX_N = 10;
             
             using (var qsim = new QuantumSimulator())
@@ -56,6 +56,7 @@ namespace DJ_BV
                 Console.WriteLine($"Result: {result}");
                 Console.WriteLine($"clock cycles: {times[n-1]}");
             }
+            // Prints all average times for 1...MAX_N
             Console.WriteLine("["+string.Join(", ", times)+"]\n");
         }
         // Runs DJ circuit with balanced Uf on a reference bit, k
@@ -89,6 +90,7 @@ namespace DJ_BV
                 Console.WriteLine($"Result: {result}");
                 Console.WriteLine($"clock cycles: {times[n-1]}");
             }
+            // Prints all average times for 1...MAX_N
             Console.WriteLine("["+string.Join(", ", times)+"]\n");
         }
         // Runs DJ circuit with constant Uf based f(x) = 0
@@ -122,6 +124,7 @@ namespace DJ_BV
                 Console.WriteLine($"Result: {result}");
                 Console.WriteLine($"clock cycles: {times[n-1]}");
             }
+            // Prints all average times for 1...MAX_N
             Console.WriteLine("["+string.Join(", ", times)+"]\n");
         }
         // Runs DJ circuit with constant Uf based f(x) = 1
@@ -155,6 +158,7 @@ namespace DJ_BV
                 Console.WriteLine($"Result: {result}");
                 Console.WriteLine($"clock cycles: {times[n-1]}");
             }
+            // Prints all average times for 1...MAX_N
             Console.WriteLine("["+string.Join(", ", times)+"]\n");
         }
     }
