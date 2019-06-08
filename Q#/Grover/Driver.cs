@@ -12,7 +12,7 @@ namespace Grover
     {
         static void Main(string[] args)
         {
-            const int ITER = 1000;
+            const int ITER = 100000;
             const int MAX_N = 10;
 
             using (var qsim = new QuantumSimulator())
@@ -23,7 +23,7 @@ namespace Grover
                 for (int n=1; n<=MAX_N; n++)
                 {
                     // Make the pattern:
-                    long a = 0; //(long) Math.Pow(2, n)-1;
+                    long a = (long) Math.Pow(2, n)-1;
                     string s = Convert.ToString(a, 2); //Convert to binary in a string
                     var parsed = s.Select(c => long.Parse(c.ToString())) // convert each char to long
                                   .ToArray(); // Convert IEnumerable from select to Array

@@ -23,6 +23,19 @@ clock cycles for n=9: 8432 --- correct: 47 out of 1000
 clock cycles for n=10: 8881 --- correct: 18 out of 1000
 [2270, 3169, 4623, 5353, 4208, 5113, 13777, 7444, 8432, 8881]
 
+clock cycles for n=1: 2156 --- correct: 50116 out of 100000
+clock cycles for n=2: 2991 --- correct: 100000 out of 100000
+clock cycles for n=3: 3889 --- correct: 78050 out of 100000
+clock cycles for n=4: 3597 --- correct: 47025 out of 100000
+clock cycles for n=5: 4045 --- correct: 25830 out of 100000
+clock cycles for n=6: 4406 --- correct: 13331 out of 100000
+clock cycles for n=7: 13080 --- correct: 18465 out of 100000
+clock cycles for n=8: 7199 --- correct: 9452 out of 100000
+clock cycles for n=9: 7873 --- correct: 4842 out of 100000
+clock cycles for n=10: 8774 --- correct: 2468 out of 100000
+[2156, 2991, 3889, 3597, 4045, 4406, 13080, 7199, 7873, 8774]
+
+
 
 k = 0:
 clock cycles for n=1: 2184 --- correct: 509 out of 1000
@@ -48,3 +61,15 @@ clock cycles for n=8: 9652 --- correct: 102 out of 1000
 clock cycles for n=9: 10807 --- correct: 53 out of 1000
 clock cycles for n=10: 11678 --- correct: 26 out of 1000
 [2315, 3235, 4706, 4582, 4888, 4454, 10759, 9652, 10807, 11678]
+
+clock cycles for n=1: 2241 --- correct: 49760 out of 100000
+clock cycles for n=2: 3018 --- correct: 100000 out of 100000
+clock cycles for n=3: 4280 --- correct: 78038 out of 100000
+clock cycles for n=4: 3955 --- correct: 47092 out of 100000
+clock cycles for n=5: 4317 --- correct: 25878 out of 100000
+clock cycles for n=6: 4330 --- correct: 13398 out of 100000
+clock cycles for n=7: 10055 --- correct: 18273 out of 100000
+clock cycles for n=8: 9059 --- correct: 9689 out of 100000
+clock cycles for n=9: 9958 --- correct: 4844 out of 100000
+clock cycles for n=10: 11237 --- correct: 2443 out of 100000
+[2241, 3018, 4280, 3955, 4317, 4330, 10055, 9059, 9958, 11237]

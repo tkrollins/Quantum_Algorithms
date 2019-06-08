@@ -23,6 +23,19 @@ clock cycles for n=9: 3251 --- mistakes: 0 out of 1000
 clock cycles for n=10: 3775 --- mistakes: 0 out of 1000
 [912, 1491, 1996, 3350, 4171, 4872, 4040, 2976, 3251, 3775]
 
+clock cycles for n=1: 763 --- mistakes: 0 out of 100000
+clock cycles for n=2: 1166 --- mistakes: 0 out of 100000
+clock cycles for n=3: 1755 --- mistakes: 0 out of 100000
+clock cycles for n=4: 2294 --- mistakes: 0 out of 100000
+clock cycles for n=5: 2877 --- mistakes: 0 out of 100000
+clock cycles for n=6: 3647 --- mistakes: 0 out of 100000
+clock cycles for n=7: 3238 --- mistakes: 0 out of 100000
+clock cycles for n=8: 3305 --- mistakes: 0 out of 100000
+clock cycles for n=9: 3418 --- mistakes: 0 out of 100000
+clock cycles for n=10: 3903 --- mistakes: 0 out of 100000
+[763, 1166, 1755, 2294, 2877, 3647, 3238, 3305, 3418, 3903]
+
+
 a = 0, b = 1:
 clock cycles for n=1: 861 --- mistakes: 0 out of 1000
 clock cycles for n=2: 1273 --- mistakes: 0 out of 1000
@@ -47,3 +60,16 @@ clock cycles for n=8: 4105 --- mistakes: 0 out of 1000
 clock cycles for n=9: 4037 --- mistakes: 0 out of 1000
 clock cycles for n=10: 3451 --- mistakes: 0 out of 1000
 [951, 1290, 1390, 1755, 2413, 2674, 3161, 4105, 4037, 3451]
+
+clock cycles for n=1: 714 --- mistakes: 0 out of 100000
+clock cycles for n=2: 1020 --- mistakes: 0 out of 100000
+clock cycles for n=3: 1447 --- mistakes: 0 out of 100000
+clock cycles for n=4: 1939 --- mistakes: 0 out of 100000
+clock cycles for n=5: 2650 --- mistakes: 0 out of 100000
+clock cycles for n=6: 3537 --- mistakes: 0 out of 100000
+clock cycles for n=7: 3285 --- mistakes: 0 out of 100000
+clock cycles for n=8: 3219 --- mistakes: 0 out of 100000
+clock cycles for n=9: 3179 --- mistakes: 0 out of 100000
+clock cycles for n=10: 3262 --- mistakes: 0 out of 100000
+[714, 1020, 1447, 1939, 2650, 3537, 3285, 3219, 3179, 3262]
+

@@ -5,8 +5,8 @@ def main():
 
     n = [i for i in range(1, 11)]
 
-    complex_times = [928, 1417, 1706, 2924, 3756, 3724, 3870, 3226, 3268, 4060]
-    simple_times = [951, 1290, 1390, 1755, 2413, 2674, 3161, 4105, 4037, 3451]
+    complex_times = [763, 1166, 1755, 2294, 2877, 3647, 3238, 3305, 3418, 3903]
+    simple_times = [714, 1020, 1447, 1939, 2650, 3537, 3285, 3219, 3179, 3262]
 
     plt.figure()
     plt.plot(n, complex_times, label='a != 0, b = 0')
@@ -16,7 +16,7 @@ def main():
     plt.xlabel('Input Bits')
     plt.ylabel('Run Time (clock cycles)')
     plt.tight_layout()
-    plt.savefig('Q#_BV_runtime.png')
+    plt.savefig('Q#_BV_runtime_100K.png')
     plt.show()
 
 

@@ -5,8 +5,8 @@ def main():
 
     n = [i for i in range(1, 11)]
 
-    complex_times = [2315, 3235, 4706, 4582, 4888, 4454, 10759, 9652, 10807, 11678]
-    simple_times = [1834, 2787, 4182, 4284, 4649, 4876, 14655, 7662, 8475, 9127]
+    complex_times = [2241, 3018, 4280, 3955, 4317, 4330, 10055, 9059, 9958, 11237]
+    simple_times = [2156, 2991, 3889, 3597, 4045, 4406, 13080, 7199, 7873, 8774]
 
     plt.figure()
     plt.plot(n, complex_times, label='k=0')
@@ -16,7 +16,7 @@ def main():
     plt.xlabel('Input Bits')
     plt.ylabel('Run Time (clock cycles)')
     plt.tight_layout()
-    plt.savefig('Q#_Grover_runtime.png')
+    plt.savefig('Q#_Grover_runtime_100K.png')
     plt.show()
 
 

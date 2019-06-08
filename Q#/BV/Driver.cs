@@ -11,7 +11,7 @@ namespace BV
     {
         static void Main(string[] args)
         {
-            const int ITER = 1000;
+            const int ITER = 100000;
             const int MAX_N = 10;
 
             using (var qsim = new QuantumSimulator())
@@ -22,7 +22,7 @@ namespace BV
                 for (int n=1; n<=MAX_N; n++)
                 {
                     // Make a long array to hold bits of a:
-                    long a = 0; //(long) Math.Pow(2, n)-1;
+                    long a = (long) Math.Pow(2, n)-1;
                     string s = Convert.ToString(a, 2); //Convert to binary in a string
                     var a_list = s.Select(c => long.Parse(c.ToString())) // convert each char to int
                                   .ToList(); // Convert IEnumerable from select to Array
@@ -34,7 +34,7 @@ namespace BV
                     // let a_bits = IntAsBoolArray(a, n);
 
                     // Make a long to hold value of b:
-                    const int b = 1;
+                    const int b = 0;
 
                     long[] tempTimes = new long[ITER];
                     int mistakes = 0;
