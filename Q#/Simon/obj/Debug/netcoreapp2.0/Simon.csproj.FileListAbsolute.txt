@@ -1,11 +1,11 @@
+/Users/tkrollins/OneDrive/Courses/CS239/team_penguin/Q#/Simon/obj/Debug/netcoreapp2.0/Simon.csprojAssemblyReference.cache
+/Users/tkrollins/OneDrive/Courses/CS239/team_penguin/Q#/Simon/obj/Debug/netcoreapp2.0/Simon.csproj.CoreCompileInputs.cache
+/Users/tkrollins/OneDrive/Courses/CS239/team_penguin/Q#/Simon/obj/Debug/netcoreapp2.0/Simon.AssemblyInfoInputs.cache
+/Users/tkrollins/OneDrive/Courses/CS239/team_penguin/Q#/Simon/obj/Debug/netcoreapp2.0/Simon.AssemblyInfo.cs
 /Users/tkrollins/OneDrive/Courses/CS239/team_penguin/Q#/Simon/bin/Debug/netcoreapp2.0/Simon.deps.json
 /Users/tkrollins/OneDrive/Courses/CS239/team_penguin/Q#/Simon/bin/Debug/netcoreapp2.0/Simon.runtimeconfig.json
 /Users/tkrollins/OneDrive/Courses/CS239/team_penguin/Q#/Simon/bin/Debug/netcoreapp2.0/Simon.runtimeconfig.dev.json
 /Users/tkrollins/OneDrive/Courses/CS239/team_penguin/Q#/Simon/bin/Debug/netcoreapp2.0/Simon.dll
 /Users/tkrollins/OneDrive/Courses/CS239/team_penguin/Q#/Simon/bin/Debug/netcoreapp2.0/Simon.pdb
-/Users/tkrollins/OneDrive/Courses/CS239/team_penguin/Q#/Simon/obj/Debug/netcoreapp2.0/Simon.csprojAssemblyReference.cache
-/Users/tkrollins/OneDrive/Courses/CS239/team_penguin/Q#/Simon/obj/Debug/netcoreapp2.0/Simon.csproj.CoreCompileInputs.cache
-/Users/tkrollins/OneDrive/Courses/CS239/team_penguin/Q#/Simon/obj/Debug/netcoreapp2.0/Simon.AssemblyInfoInputs.cache
-/Users/tkrollins/OneDrive/Courses/CS239/team_penguin/Q#/Simon/obj/Debug/netcoreapp2.0/Simon.AssemblyInfo.cs
 /Users/tkrollins/OneDrive/Courses/CS239/team_penguin/Q#/Simon/obj/Debug/netcoreapp2.0/Simon.dll
 /Users/tkrollins/OneDrive/Courses/CS239/team_penguin/Q#/Simon/obj/Debug/netcoreapp2.0/Simon.pdb

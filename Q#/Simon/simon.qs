@@ -113,5 +113,15 @@ namespace Simon {
             return j;
         }
     }
+
+    operation Simon_Bitwise_Shift(N : Int) : Int[]
+    {
+        return Simon_Algorithm_Reference(N, Oracle_BitwiseRightShift_Reference);
+    }
+
+    operation Simon_Multi(N : Int, A : Int[][]) : Int[]
+    {
+        return Simon_Algorithm_Reference(N, Oracle_MultidimensionalOperatorOutput_Reference(_,_,A));
+    }
     
 }

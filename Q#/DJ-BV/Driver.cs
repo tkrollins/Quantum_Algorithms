@@ -12,7 +12,7 @@ namespace DJ_BV
     {
         static void Main(string[] args)
         {
-            const int ITER = 1000;
+            const int ITER = 10000;
             const int MAX_N = 10;
             
             using (var qsim = new QuantumSimulator())
@@ -114,7 +114,7 @@ namespace DJ_BV
                 {
                     var watch = System.Diagnostics.Stopwatch.StartNew();
                     result = DJ_constant_zero.Run(qsim, n).Result;
-                    // Balanced f must always be false
+                    // Constant f must always be true
                     Debug.Assert(result);
                     watch.Stop();
                     tempTimes[i] = watch.ElapsedTicks;
@@ -148,7 +148,7 @@ namespace DJ_BV
                 {
                     var watch = System.Diagnostics.Stopwatch.StartNew();
                     result = DJ_constant_one.Run(qsim, n).Result;
-                    // Balanced f must always be false
+                    // Constant f must always be true
                     Debug.Assert(result);
                     watch.Stop();
                     tempTimes[i] = watch.ElapsedTicks;
