@@ -90,6 +90,9 @@ namespace BV
                     }
                 }
             }
+
+            /////////////////////////////////////////////////////////////////////////////////
+            // Print statistics and return average time:
             long average = (long)tempTimes.Average();
             Console.WriteLine($"clock cycles for n={n}: {average} \t\t correct: {ITER - mistakes} out of {ITER}");
 
