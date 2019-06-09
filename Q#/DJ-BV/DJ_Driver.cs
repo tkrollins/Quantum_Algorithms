@@ -12,7 +12,7 @@ namespace DJ_BV
     {
         static void Main(string[] args)
         {
-            const int ITER = 10000;
+            const int ITER = 100;
             const int MAX_N = 10;
             
             using (var qsim = new QuantumSimulator())

@@ -12,6 +12,7 @@ namespace Simon {
     
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Canon;
+    open Microsoft.Quantum.Diagnostics;
     
     
     //////////////////////////////////////////////////////////////////
@@ -113,15 +114,54 @@ namespace Simon {
             return j;
         }
     }
-
+    // Creates DJ circuit with balanced Uf based right bit shift of input
+    // Inputs:
+    //      1) the number of qubits in the input register N for the function f
     operation Simon_Bitwise_Shift(N : Int) : Int[]
     {
         return Simon_Algorithm_Reference(N, Oracle_BitwiseRightShift_Reference);
     }
 
+    // Creates DJ circuit with balanced Uf based multi-dimensional operator on input
+    // Inputs:
+    //      1) the number of qubits in the input register N for the function f
+    //      2) The operator to use on input
     operation Simon_Multi(N : Int, A : Int[][]) : Int[]
     {
         return Simon_Algorithm_Reference(N, Oracle_MultidimensionalOperatorOutput_Reference(_,_,A));
+    }
+
+    // Test that qubits are automatically returned to inital state at the end of "using".
+    // Spoiler: they aren't.  You must call ResetAll() manually
+    operation Test_Qubit_Reset() : Int
+    {
+        using (test_qubits = Qubit[3])
+        {
+            AssertAllZero(test_qubits);
+            Message("All qubits started in Zero state");
+            ApplyToEach(X, test_qubits);
+            AssertQubit(One, test_qubits[0]);
+            AssertQubit(One, test_qubits[1]);
+            AssertQubit(One, test_qubits[2]);
+            Message("All qubits now in One state");
+
+            // Will throw an exception here.
+            // Qubits were not reset manually.
+        }
+
+        using (test_qubits_after = Qubit[3])
+        {
+            Message("Qubits re-aquired");
+            if ( (M(test_qubits_after[0]) == One) or
+                 (M(test_qubits_after[1]) == One) or
+                 (M(test_qubits_after[2]) == One) )
+                 {
+                    Message("Qubits not returned to Zero state");
+                    return 0;
+                 }
+        }
+        Message("All qubits returned to Zero state.");
+        return 1;
     }
     
 }
