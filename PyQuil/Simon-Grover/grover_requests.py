@@ -71,7 +71,7 @@ class Grover:
         :return: program state after this operation
         """
         total_gs = int(np.round(self.num_tries(self.n)))
-        print('adding {} G blocks...'.format(total_gs))
+        # print('adding {} G blocks...'.format(total_gs))
         assert total_gs > 0
         for _ in range(total_gs):
             self.G(k)
@@ -111,6 +111,7 @@ class Grover:
 
         # add a X for every bit in k that is 0
         k_bits = self.int_to_bits(k, self.n)
+        print('# Expected:', k)
         self.p += Program([X(self.from_map(k_b)) for k_b in range(len(k_bits)) if k_bits[k_b] == 0])
 
         # add a controlled Z to the first (arbitrary) qubit. All other qubits will be controls
@@ -150,7 +151,7 @@ class Grover:
         return y
 
 
-def run_grover(n, k, numshots=5, sim_wave=False, print_p=False, use_aspen=True):
+def run_grover(n, k, numshots=5, sim_wave=False, print_p=False, qubits=None):
     """
     Run a single experiment of Grover
     :param n: the number of bits to use in the circuit
@@ -158,17 +159,18 @@ def run_grover(n, k, numshots=5, sim_wave=False, print_p=False, use_aspen=True):
     :param numshots: number of times to run simulation (if enabled)
     :param sim_wave: generate waveform (if True) or run simulation (if False)
     :param print_p: print the circuit prior to running
-    :param use_aspen: whether to compile using the Aspen QPC when available (3 <= n <= 5)
+    :param qubits: map of qubits
     :return:
     """
 
     # setup the experiment
-    qvm = get_qc('Aspen-4-{}Q-A-qvm'.format(n) if use_aspen else '9q-square-qvm')
-    gr = Grover(n, qubits=(qvm.qubits() if use_aspen else None))
+    gr = Grover(n, qubits=qubits)
     p = gr.build_circuit(k)
     if print_p:
         print(p)
+        return
 
+    qvm = get_qc('Aspen-4-12{}-A-qvm'.format(n))
     with local_qvm():
         if sim_wave:
             # debug waveform
@@ -215,30 +217,14 @@ def run_grover(n, k, numshots=5, sim_wave=False, print_p=False, use_aspen=True):
 
 
 def main():
-    n = 2   # the number of bits in f: {0,1}^n → {0,1}
-    k = 2   # f(x = k) = 1, f(x != k) = 0
-    # run the experiment with specific n and k
-    run_grover(n, k, numshots=2**n, sim_wave=False, use_aspen=True)
+    k = 0
+    for n in [2, 3, 4, 5, 6]:
 
-    n = 3   # the number of bits in f: {0,1}^n → {0,1}
-    k = 2   # f(x = k) = 1, f(x != k) = 0
-    # run the experiment with specific n and k
-    run_grover(n, k, numshots=2**n, sim_wave=False, use_aspen=True)
+        print('# --- Complex:')
+        run_grover(n, k, numshots=2**n, print_p=True, qubits=[0, 1, 2, 6, 7, 10, 11, 13, 14, 15, 16, 17])
 
-    n = 4   # the number of bits in f: {0,1}^n → {0,1}
-    k = 2   # f(x = k) = 1, f(x != k) = 0
-    # run the experiment with specific n and k
-    run_grover(n, k, numshots=2**n, sim_wave=False, use_aspen=True)
-
-    n = 5   # the number of bits in f: {0,1}^n → {0,1}
-    k = 2   # f(x = k) = 1, f(x != k) = 0
-    # run the experiment with specific n and k
-    run_grover(n, k, numshots=2**n, sim_wave=False, use_aspen=True)
-
-    n = 6   # the number of bits in f: {0,1}^n → {0,1}
-    k = 2   # f(x = k) = 1, f(x != k) = 0
-    # run the experiment with specific n and k
-    run_grover(n, k, numshots=2**n, sim_wave=False, use_aspen=True)
+        print('# --- Simple:')
+        run_grover(n, (2 ** n) - 1, numshots=2**n, print_p=True, qubits=[0, 1, 2, 6, 7, 10, 11, 13, 14, 15, 16, 17])
 
 
 if __name__ == '__main__':
