@@ -1,0 +1,24 @@
+python post.py jzharris@g.ucla.edu --shots 4 quil_programs\grover\grover_n2_complex.txt
+python post.py jzharris@g.ucla.edu --shots 8 quil_programs\grover\grover_n3_complex.txt
+python post.py jzharris@g.ucla.edu --shots 16 quil_programs\grover\grover_n4_complex.txt
+python post.py jzharris@g.ucla.edu --shots 32 quil_programs\grover\grover_n5_complex.txt
+python post.py jzharris@g.ucla.edu --shots 64 quil_programs\grover\grover_n6_complex.txt
+
+python post.py jzharris@g.ucla.edu --commit --no-check --shots 4 quil_programs\grover\grover_n2_complex.txt
+python post.py jzharris@g.ucla.edu --commit --no-check --shots 8 quil_programs\grover\grover_n3_complex.txt
+python post.py jzharris@g.ucla.edu --commit --no-check --shots 16 quil_programs\grover\grover_n4_complex.txt
+python post.py jzharris@g.ucla.edu --commit --no-check --shots 32 quil_programs\grover\grover_n5_complex.txt
+python post.py jzharris@g.ucla.edu --commit --no-check --shots 64 quil_programs\grover\grover_n6_complex.txt
+
+
+python post.py jzharris@g.ucla.edu --shots 4 quil_programs\grover\grover_n2_simple.txt
+python post.py jzharris@g.ucla.edu --shots 8 quil_programs\grover\grover_n3_simple.txt
+python post.py jzharris@g.ucla.edu --shots 16 quil_programs\grover\grover_n4_simple.txt
+python post.py jzharris@g.ucla.edu --shots 32 quil_programs\grover\grover_n5_simple.txt
+python post.py jzharris@g.ucla.edu --shots 64 quil_programs\grover\grover_n6_simple.txt
+
+python post.py jzharris@g.ucla.edu --commit --no-check --shots 4 quil_programs\grover\grover_n2_simple.txt
+python post.py jzharris@g.ucla.edu --commit --no-check --shots 8 quil_programs\grover\grover_n3_simple.txt
+python post.py jzharris@g.ucla.edu --commit --no-check --shots 16 quil_programs\grover\grover_n4_simple.txt
+python post.py jzharris@g.ucla.edu --commit --no-check --shots 32 quil_programs\grover\grover_n5_simple.txt
+python post.py jzharris@g.ucla.edu --commit --no-check --shots 64 quil_programs\grover\grover_n6_simple.txt

@@ -31,6 +31,10 @@ class Grover:
         :param k: the specific value for which f(x) returns 1
         :return:
         """
+
+        k_bits = self.int_to_bits(k, self.n)
+        print('# Expected:', k_bits)
+
         self.initialize_experiment()
         self.all_hadamards()
         self.insert_Gs(k)
@@ -111,7 +115,6 @@ class Grover:
 
         # add a X for every bit in k that is 0
         k_bits = self.int_to_bits(k, self.n)
-        print('# Expected:', k)
         self.p += Program([X(self.from_map(k_b)) for k_b in range(len(k_bits)) if k_bits[k_b] == 0])
 
         # add a controlled Z to the first (arbitrary) qubit. All other qubits will be controls

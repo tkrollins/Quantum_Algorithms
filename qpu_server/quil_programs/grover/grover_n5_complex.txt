@@ -1,0 +1,41 @@
+# --- Complex:
+# Expected: [0, 0, 0, 0, 0]
+
+H 0
+H 1
+H 2
+H 6
+H 7
+X 0
+X 1
+X 2
+X 6
+X 7
+CONTROLLED CONTROLLED CONTROLLED CONTROLLED Z 7 6 2 1 0
+X 0
+X 1
+X 2
+X 6
+X 7
+H 0
+H 1
+H 2
+H 6
+H 7
+X 0
+X 1
+X 2
+X 6
+X 7
+CONTROLLED CONTROLLED CONTROLLED CONTROLLED Z 7 6 2 1 0
+X 0
+X 1
+X 2
+X 6
+X 7
+H 0
+H 1
+H 2
+H 6
+H 7
+Z 0
