@@ -1,0 +1,15 @@
+# --- Simple:
+# Expected: [0, 0, 0]
+
+I 0
+I 1
+I 2
+X 6
+H 0
+H 1
+H 2
+H 6
+X 6
+H 0
+H 1
+H 2

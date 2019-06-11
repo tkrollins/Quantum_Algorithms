@@ -1,0 +1,9 @@
+# --- Simple:
+# Expected: [0]
+
+I 0
+X 1
+H 0
+H 1
+X 1
+H 0

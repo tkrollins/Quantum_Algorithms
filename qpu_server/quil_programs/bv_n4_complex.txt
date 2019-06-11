@@ -1,0 +1,21 @@
+# --- Complex:
+# Expected: [1, 1, 1, 1]
+
+I 0
+I 1
+I 2
+I 6
+X 7
+H 0
+H 1
+H 2
+H 6
+H 7
+CNOT 0 7
+CNOT 1 7
+CNOT 2 7
+CNOT 6 7
+H 0
+H 1
+H 2
+H 6
