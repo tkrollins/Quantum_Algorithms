@@ -1,14 +1,15 @@
 import numpy as np
 
 
-def getResultsArray(resultsDict, n):
+def getResultsArray(resultsDict, n, Aspen12Q=True):
     """
     Turns dict returned from QPU server into matrix.
     :param resultsDict: results dict from QPU server
     :param n: qubits measured
     :return: matrix with results. Each row is a single run.
     """
-    qubits = [0, 1, 2, 7, 14, 15]
+
+    qubits = [0, 1, 2, 6, 7, 10, 11, 13, 14, 15, 16, 17] if Aspen12Q else [0, 1, 2, 7, 14, 15]
     qubits = qubits[:n]
     results = np.array([resultsDict[i] for i in qubits])
     return results.transpose()
