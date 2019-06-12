@@ -84,7 +84,7 @@ def s_solver(y_set):
         s_set = s_set.difference(to_be_removed)
     return s_set
 
-def compare_y_set(qvm, qpu):
+def y_error(qvm, qpu):
 
     qvm = np.unique(qvm, axis=0)
     correct = 0
@@ -94,6 +94,9 @@ def compare_y_set(qvm, qpu):
                 correct += 1
                 break
     return 1 - (correct / len(qpu))
+
+def time_per_shot(shots20, shots25):
+    return (shots25 - shots20) / 5
 
 
         
