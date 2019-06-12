@@ -52,3 +52,49 @@ def DJ_constantResultsCorrectness(qpu_results):
     correctness = correctness.astype(int)
     frac_correct = correctness.sum() / len(correctness)
     return frac_correct
+
+def s_solver(y_set):
+    """
+    Naive solver for s given a set of y vectors.
+    :param y_set: y vectors returned from quantum part of algorithm.   For every y, <y, s> = 0
+    :return: A set of all valid s values in integer form. Does not include 0.
+    """
+
+    y_set = np.unique(y_set, axis=0)
+    # number of bits in y/s
+    n = len(y_set[0])
+
+    if n > 1:
+        # removes 0 vector
+        y_set = np.delete(y_set, np.where(~y_set.any(axis=1))[0], axis=0)
+    if len(y_set) > n-1 and n != 1:
+        # remove one y so n-1 left
+        y_set = y_set[:-1]
+        
+    # set of all currently valid s values
+    s_set = set([s for s in range(1, 2 ** n)])
+    for y in y_set:
+        to_be_removed = set()
+        for s in s_set:
+            s_bin = np.array(list(f'{s:0{n}b}')).astype(int)
+            # mod 2 dot product
+            if np.dot(y, s_bin) % 2 != 0:
+                # s values that do not satisfy <y, s> = 0
+                to_be_removed.add(s)
+        s_set = s_set.difference(to_be_removed)
+    return s_set
+
+def compare_y_set(qvm, qpu):
+
+    qvm = np.unique(qvm, axis=0)
+    correct = 0
+    for y1 in qpu:
+        for y2 in qvm:
+            if np.array_equal(y1, y2):
+                correct += 1
+                break
+    return 1 - (correct / len(qpu))
+
+
+        
+
