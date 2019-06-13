@@ -1,2 +1,3 @@
 First result: QVM official server
-Second result: Aspen 12 Qubit QPU
+Second result: Aspen 12 Qubit QPU (10 shots)
+Third result: Aspen 12 Qubit QPU (25 shots)
