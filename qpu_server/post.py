@@ -33,11 +33,15 @@ def main(args):
         send_jobs(jobs, args.email, args.server, args.shots)
 
 def check_program(program, shots, lattice):
-    from pyquil import get_qc
+    from pyquil import get_qc, Program
     from pyquil.parser import parse_program
     from pyquil.api import local_qvm
 
     p = parse_program(program)
+    start = time.time()
+    Program().inst(program)
+    end = time.time()
+    print(f'INST time: {end-start}')
     with local_qvm():
         qc = get_qc(lattice, as_qvm=True)
         return qc.run_and_measure(p, trials=shots)

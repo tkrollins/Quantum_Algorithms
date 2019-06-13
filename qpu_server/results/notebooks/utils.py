@@ -97,7 +97,3 @@ def y_error(qvm, qpu):
 
 def time_per_shot(shots20, shots25):
     return (shots25 - shots20) / 5
-
-
-        
-
