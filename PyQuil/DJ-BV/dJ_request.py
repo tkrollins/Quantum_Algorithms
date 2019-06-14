@@ -128,12 +128,11 @@ def run_DJ(f, topology='Aspen-4-12Q-A-qvm'):
     # multiple trials - check to make sure that the probability for getting the given outcome is 1
     p.wrap_in_numshots_loop(10)
 
-    # print(p.out())
+    print(p.out())
 
     with local_qvm():
         # one way of measuring:
         executable = qvm.compile(p)
-        print(executable.program)
         result = qvm.run(executable)
         print('Results:')
         print(result)
@@ -186,14 +185,7 @@ f_const_4_1 = [[0,0,0,0,1],[0,0,0,1,1],[0,0,1,0,1],[0,0,1,1,1],[0,1,0,0,1],[0,1,
            [1,0,0,0,1],[1,0,0,1,1],[1,0,1,0,1],[1,0,1,1,1],[1,1,0,0,1],[1,1,0,1,1],[1,1,1,0,1],[1,1,1,1,1]]
 
 def main():
-    run_DJ(f_bal_4)
-
-    # Will return [0 0 0 1]
-    # run_DJ(f_bal_3)
-    # # Will return [0 0 0 0]
-    # run_DJ(f_const_4_0)
-    # # Will return [0 0 0 0]
-    # run_DJ(f_const_4_1)
+    run_DJ(f_bal_3)
 
 
 if __name__ == '__main__':

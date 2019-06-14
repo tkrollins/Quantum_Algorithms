@@ -97,3 +97,21 @@ def y_error(qvm, qpu):
 
 def time_per_shot(shots20, shots25):
     return (shots25 - shots20) / 5
+
+
+def get_error_rate(qvm, qpu):
+    """
+    Compares results between QVM and QPU runs.
+    :param qvm: matrix of qvm results
+    :param qpu: matrix of qpu results
+    :return: fraction of error
+    """
+    errors = 0
+    total_bits = (len(qvm) * len(qvm[0]))
+    for run_qvm, run_qpu in zip(qvm, qpu):
+        if not np.array_equal(run_qvm, run_qpu):
+            for bit_qvm, bit_qpu in zip(run_qvm, run_qpu):
+                errors += int(bit_qvm != bit_qpu)
+    print(f'Errors: {errors}')
+    print(f'Total Bits: {total_bits}')
+    return errors / total_bits
